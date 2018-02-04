@@ -1,0 +1,88 @@
+// Attribute	Type	Description
+// id	String	Unique identifier
+// parentId	String	id of the parent post
+// timestamp	Integer	Time created - default data tracks this in Unix time. You can use Date.now() to get this number
+// body	String	Comment body
+// author	String	Comment author
+// voteScore	Integer	Net votes the comment has received (default: 1)
+// deleted	Boolean	Flag if comment has been 'deleted' (inaccessible by the front end), (default: false)
+// parentDeleted	Boolean	Flag for when the the parent post was deleted, but the comment itself was not.
+
+import uuid from 'uuid/v1'
+
+export const CREATE_COMMENT = 'CREATE_COMMENT'
+export const ADD_COMMENT = 'ADD_COMMENT'
+export const DELETE_COMMENT = 'DELETE_COMMENT'
+export const UPVOTE_COMMENT = 'UPVOTE_COMMENT'
+export const DOWNVOTE_COMMENT = 'DOWNVOTE_COMMENT'
+
+// todo add thunks to update the daata and return filled out data
+
+export function createComment ({
+  parentId,
+  body,
+  author,
+  category
+}) {
+  return {
+    type: CREATE_COMMENT,
+    parentId,
+    body,
+    author,
+    category,
+    voteScore: 1,
+    deleted: false,
+    timestamp: Date.now(),
+    id: uuid()
+  }
+}
+
+export function addComment ({
+  parentId,
+  timestamp,
+  body,
+  author,
+  category,
+  voteScore,
+  deleted,
+  id
+  }) {
+  return {
+    type: CREATE_COMMENT,
+    parentId,
+    timestamp,
+    body,
+    author,
+    category,
+    voteScore,
+    deleted,
+    id
+  }
+}
+
+export function deleteComment ({
+  id
+}) {
+  return {
+    type: DELETE_COMMENT,
+    id
+  }
+}
+
+export function upvoteComment ({
+  id
+}) {
+  return {
+    type: UPVOTE_COMMENT,
+    id
+  }
+}
+
+export function downvoteComment ({
+  id
+}) {
+  return {
+    type: DOWNVOTE_COMMENT,
+    id
+  }
+}
