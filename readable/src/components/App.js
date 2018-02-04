@@ -7,6 +7,7 @@ import axios from 'axios'
 import MainPage from './MainPage'
 import Category from './Category'
 import Post from './Post'
+import { addPost } from '../actions/post'
 
 class App extends Component {
   componentDidMount () {
@@ -15,6 +16,14 @@ class App extends Component {
     .then((resp) => {
       resp.data.categories.forEach(element => {
         this.props.addCategory(element)
+      })
+    })
+
+    axios.get(`http://127.0.0.1:3001/posts`,
+    {headers: {Authorization: 'Bearer potato'}})
+    .then((resp) => {
+      resp.data.forEach(element => {
+        this.props.addPost(element)
       })
     })
   }
@@ -40,7 +49,8 @@ function mapStateToProps ({comments, posts, categories}) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    addCategory: (data) => dispatch(createCategory(data))
+    addCategory: (data) => dispatch(createCategory(data)),
+    addPost: (data) => dispatch(addPost(data))
   }
 }
 

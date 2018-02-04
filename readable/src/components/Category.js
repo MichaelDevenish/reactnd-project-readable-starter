@@ -11,7 +11,6 @@ class Category extends Component {
     axios.get(`http://127.0.0.1:3001/${this.props.match.params.name}/posts`,
     {headers: {Authorization: 'Bearer potato'}})
     .then((resp) => {
-      console.log(resp)
       resp.data.forEach(element => {
         this.props.addPost(element)
       })
@@ -23,7 +22,10 @@ class Category extends Component {
     if (postIds.length > 0) {
       return postIds.map((postId) => {
         return (
-          <Link to={`/post/${postId}`} key={postId}>
+          <Link to={{
+            pathname: `/post/${postId}`,
+            state: { fromDashboard: false }
+          }} key={postId}>
             <p>{posts[postId].title}</p>
           </Link>
         )
@@ -62,7 +64,6 @@ Category.propTypes = {
 }
 
 function mapStateToProps ({comments, posts, categories}, ownProps) {
-  console.log(this.props)
   return {
     posts: Object
     .keys(posts)

@@ -38,13 +38,18 @@ class Category extends Component {
   render () {
     const {
       comments,
-      post
+      post,
+      location: {
+        state: {
+          fromDashboard
+        }
+      }
     } = this.props
     return (
       <div className='Main'>
         <h1>{post.title}</h1>
         {this.renderComments(comments)}
-        <Link to={`/category/${post.category}`}>
+        <Link to={fromDashboard ? `/` : `/category/${post.category}`}>
           <p>Back</p>
         </Link>
       </div>

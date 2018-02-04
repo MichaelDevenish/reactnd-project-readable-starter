@@ -4,14 +4,35 @@ import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 
 class MainPage extends Component {
+  renderPosts (posts) {
+    const postIds = Object.keys(posts)
+    if (postIds.length > 0) {
+      return postIds.map((postId) => {
+        return (
+          <Link to={{
+            pathname: `/post/${postId}`,
+            state: { fromDashboard: true }
+          }} key={postId}>
+            <p>{posts[postId].title}</p>
+          </Link>
+        )
+      })
+    }
+  }
+
   renderCategories (categories) {
     const categoryNames = Object.keys(categories)
     if (categoryNames.length > 0) {
       return categoryNames.map((category) => {
         return (
-          <Link to={`/category/${categories[category].category}`} key={categories[category].category}>
-            <p>{categories[category].category}</p>
-          </Link>
+          <div className='category'>
+            <Link to={`/category/${categories[category].category}`} key={categories[category].category}>
+              <h2>{categories[category].category}</h2>
+            </Link>
+            <ul>
+              {this.renderPosts(categories[category].posts)}
+            </ul>
+          </div>
         )
       })
     }
