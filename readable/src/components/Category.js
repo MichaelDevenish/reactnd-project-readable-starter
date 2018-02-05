@@ -3,8 +3,9 @@ import '../App.css'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import axios from 'axios'
-import { addPost } from '../actions/post'
 import PropTypes from 'prop-types'
+import Voter from './Voter'
+import { addPost, upvotePostAsync, downvotePostAsync } from '../actions/post'
 
 class Category extends Component {
   componentDidMount () {
@@ -22,12 +23,19 @@ class Category extends Component {
     if (postIds.length > 0) {
       return postIds.map((postId) => {
         return (
-          <Link to={{
-            pathname: `/post/${postId}`,
-            state: { fromDashboard: false }
-          }} key={postId}>
-            <p>{posts[postId].title}</p>
-          </Link>
+          <div className='category' key={postId}>
+            <Voter
+              onVoteUp={() => { this.props.upvotePost({id: postId}) }}
+              onVoteDown={() => { this.props.downvotePost({id: postId}) }}
+              voteScore={posts[postId].voteScore}
+            />
+            <Link to={{
+              pathname: `/post/${postId}`,
+              state: { fromDashboard: false }
+            }}>
+              <p>{posts[postId].title}</p>
+            </Link>
+          </div>
         )
       })
     }
@@ -81,7 +89,9 @@ function mapStateToProps ({comments, posts, categories}, ownProps) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    addPost: (data) => dispatch(addPost(data))
+    addPost: (data) => dispatch(addPost(data)),
+    upvotePost: (data) => dispatch(upvotePostAsync(data)),
+    downvotePost: (data) => dispatch(downvotePostAsync(data))
   }
 }
 

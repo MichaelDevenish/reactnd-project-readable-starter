@@ -34,7 +34,7 @@ export default function (state = {}, action) {
         ...state,
         [action.id]: {
           ...state[action.id],
-          voteScore: state[action.id].voteScore + 1
+          voteScore: state[action.id].voteScore - 1
         }
       }
     default:

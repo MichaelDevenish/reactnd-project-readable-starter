@@ -3,8 +3,9 @@ import '../App.css'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import axios from 'axios'
-import { addComment } from '../actions/comment'
-import { addPost } from '../actions/post'
+import { addComment, upvoteCommentAsync, downvoteCommentAsync } from '../actions/comment'
+import { addPost, upvotePostAsync, downvotePostAsync } from '../actions/post'
+import Voter from './Voter'
 import PropTypes from 'prop-types'
 
 class Category extends Component {
@@ -29,7 +30,14 @@ class Category extends Component {
     if (commentIds.length > 0) {
       return commentIds.map((commentId) => {
         return (
-          <p key={commentId}>{comments[commentId].body}</p>
+          <div className='comment' key={commentId}>
+            <Voter
+              onVoteUp={() => { this.props.upvoteComment({id: commentId}) }}
+              onVoteDown={() => { this.props.downvoteComment({id: commentId}) }}
+              voteScore={comments[commentId].voteScore}
+            />
+            <p>{comments[commentId].body}</p>
+          </div>
         )
       })
     }
@@ -40,16 +48,22 @@ class Category extends Component {
       comments,
       post,
       location: {
-        state: {
-          fromDashboard
-        }
-      }
+        state
+      },
+      upvotePost,
+      downvotePost
     } = this.props
+
     return (
       <div className='Main'>
+        <Voter
+          onVoteUp={() => { upvotePost({id: post.id}) }}
+          onVoteDown={() => { downvotePost({id: post.id}) }}
+          voteScore={post.voteScore}
+        />
         <h1>{post.title}</h1>
         {this.renderComments(comments)}
-        <Link to={fromDashboard ? `/` : `/category/${post.category}`}>
+        <Link to={state ? state.fromDashboard ? `/` : `/category/${post.category}` : '/'}>
           <p>Back</p>
         </Link>
       </div>
@@ -59,18 +73,25 @@ class Category extends Component {
 
 Category.propTypes = {
   post: PropTypes.shape({
-    title: PropTypes.string.isRequired
+    title: PropTypes.string.isRequired,
+    voteScore: PropTypes.number.isRequired
   }).isRequired,
   comments: PropTypes.objectOf(
     PropTypes.shape({
       body: PropTypes.string.isRequired
     })
-  ).isRequired
+  ).isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      fromDashboard: PropTypes.bool.isRequired
+    })
+  }).isRequired
 }
 
 Category.defaultProps = {
   post: PropTypes.shape({
-    title: ''
+    title: '',
+    voteScore: 0
   })
 }
 
@@ -94,7 +115,11 @@ function mapStateToProps ({comments, posts, categories}, ownProps) {
 function mapDispatchToProps (dispatch) {
   return {
     addComment: (data) => dispatch(addComment(data)),
-    addPost: (data) => dispatch(addPost(data))
+    addPost: (data) => dispatch(addPost(data)),
+    upvotePost: (data) => dispatch(upvotePostAsync(data)),
+    downvotePost: (data) => dispatch(downvotePostAsync(data)),
+    upvoteComment: (data) => dispatch(upvoteCommentAsync(data)),
+    downvoteComment: (data) => dispatch(downvoteCommentAsync(data))
   }
 }
 

@@ -9,6 +9,7 @@
 // parentDeleted	Boolean	Flag for when the the parent post was deleted, but the comment itself was not.
 
 import uuid from 'uuid/v1'
+import axios from 'axios'
 
 export const CREATE_COMMENT = 'CREATE_COMMENT'
 export const ADD_COMMENT = 'ADD_COMMENT'
@@ -85,4 +86,26 @@ export function downvoteComment ({
     type: DOWNVOTE_COMMENT,
     id
   }
+}
+
+export function upvoteCommentAsync ({
+  id
+}) {
+  return dispatch => axios.post(`http://127.0.0.1:3001/comments/${id}`,
+    {option: 'upVote'},
+    {headers: {Authorization: 'Bearer potato'}})
+    .then((resp) => {
+      dispatch(upvoteComment({id: id}))
+    })
+}
+
+export function downvoteCommentAsync ({
+  id
+}) {
+  return dispatch => axios.post(`http://127.0.0.1:3001/comments/${id}`,
+    {option: 'downVote'},
+    {headers: {Authorization: 'Bearer potato'}})
+    .then((resp) => {
+      dispatch(downvoteComment({id: id}))
+    })
 }

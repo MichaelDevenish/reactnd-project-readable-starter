@@ -8,6 +8,7 @@
 // voteScore	Integer	Net votes the post has received (default: 1)
 // deleted	Boolean	Flag if post has been 'deleted' (inaccessible by the front end), (default: false)
 import uuid from 'uuid/v1'
+import axios from 'axios'
 
 export const CREATE_POST = 'CREATE_POST'
 export const ADD_POST = 'ADD_POST'
@@ -87,4 +88,26 @@ export function downvotePost ({
     type: DOWNVOTE_POST,
     id
   }
+}
+
+export function upvotePostAsync ({
+  id
+}) {
+  return dispatch => axios.post(`http://127.0.0.1:3001/posts/${id}`,
+    {option: 'upVote'},
+    {headers: {Authorization: 'Bearer potato'}})
+    .then((resp) => {
+      dispatch(upvotePost({id: id}))
+    })
+}
+
+export function downvotePostAsync ({
+  id
+}) {
+  return dispatch => axios.post(`http://127.0.0.1:3001/posts/${id}`,
+    {option: 'downVote'},
+    {headers: {Authorization: 'Bearer potato'}})
+    .then((resp) => {
+      dispatch(downvotePost({id: id}))
+    })
 }
