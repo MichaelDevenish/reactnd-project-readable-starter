@@ -55,7 +55,7 @@ class Category extends Component {
     } = this.props
 
     return (
-      <div className='Main'>
+      <div className='post-page'>
         <Voter
           onVoteUp={() => { upvotePost({id: post.id}) }}
           onVoteDown={() => { downvotePost({id: post.id}) }}

@@ -13,7 +13,7 @@ class MainPage extends Component {
         return (
           <div className='category' key={categories[category].path}>
             <Link to={`/category/${categories[category].path}`}>
-              <h2>{categories[category].name}</h2>
+              <h3>{categories[category].name}</h3>
             </Link>
           </div>
         )
@@ -31,11 +31,15 @@ class MainPage extends Component {
 
     return (
       <div className='Main'>
-        {this.renderCategories(categories)}
+        <div className='categories'>
+          <h2>Categories</h2>
+          {this.renderCategories(categories)}
+        </div>
         <PostList
           posts={posts}
           upvotePost={upvotePost}
           downvotePost={downvotePost}
+          title='Posts'
           fromDashboard
         />
       </div>

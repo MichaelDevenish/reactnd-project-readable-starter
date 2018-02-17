@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import axios from 'axios'
 import PropTypes from 'prop-types'
-import Voter from './Voter'
 import { addPost, upvotePostAsync, downvotePostAsync } from '../actions/post'
 import PostList from './PostList'
 
@@ -32,16 +31,14 @@ class Category extends Component {
     } = this.props
 
     return (
-      <div className='Main'>
-        <h1>{name}</h1>
+      <div className='Category'>
         <PostList
           posts={posts}
           upvotePost={upvotePost}
           downvotePost={downvotePost}
+          title={name}
+          titleBack={'/'}
         />
-        <Link to={`/`}>
-          <p>Back</p>
-        </Link>
       </div>
     )
   }
