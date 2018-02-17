@@ -1,28 +1,71 @@
-.App {
+body {
+  background-color: rgb(31, 30, 30);
+}
+
+.post {
+  overflow: hidden;
+}
+
+.post.evenPost {
+  background-color: rgb(51, 51, 51);
+}
+
+.post.oddPost {
+  background-color: rgb(88, 88, 88);
+}
+
+.post:hover {
+  background-color: gray;
+}
+
+.postDetails {
+  height: 100%;
+}
+
+.postDetails a {
+  color: whitesmoke;
+  text-decoration: inherit;
+}
+
+.postDetails a:hover {
+  color: lightblue;
+}
+
+.Voter {
+  padding: 1em;
+  width:auto;
   text-align: center;
+  float:left;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.Voter p {
+  color: whitesmoke;
+  text-align: center;
+  margin: 0px;
+  margin-bottom: .3em;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+.Voter > .upvote:hover, .Voter > .upvote:focus, .Voter > .upvote.votedUp {
+  background-color: greenyellow;
 }
 
-.App-title {
-  font-size: 1.5em;
+.Voter > .downvote:hover, .Voter > .downvote:focus, .Voter > .downvote.votedDown {
+  background-color: red;
 }
 
-.App-intro {
-  font-size: large;
+.Voter > .upvote {
+  -webkit-mask-image: url('./images/chevron-up.svg');
+  mask-image: url('./images/chevron-up.svg');
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.Voter > .downvote {
+  -webkit-mask-image: url('./images/chevron-down.svg');
+  mask-image: url('./images/chevron-down.svg');
+}
+
+.Voter > .upvote, .Voter > .downvote {
+  width: 2em;
+  height: 2em;
+  border: none;
+  background-color: whitesmoke;
 }

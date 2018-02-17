@@ -6,6 +6,7 @@ import axios from 'axios'
 import PropTypes from 'prop-types'
 import Voter from './Voter'
 import { addPost, upvotePostAsync, downvotePostAsync } from '../actions/post'
+import PostList from './PostList'
 
 class Category extends Component {
   componentDidMount () {
@@ -18,29 +19,6 @@ class Category extends Component {
     })
   }
 
-  renderPosts (posts) {
-    const postIds = Object.keys(posts)
-    if (postIds.length > 0) {
-      return postIds.map((postId) => {
-        return (
-          <div className='category' key={postId}>
-            <Voter
-              onVoteUp={() => { this.props.upvotePost({id: postId}) }}
-              onVoteDown={() => { this.props.downvotePost({id: postId}) }}
-              voteScore={posts[postId].voteScore}
-            />
-            <Link to={{
-              pathname: `/post/${postId}`,
-              state: { fromDashboard: false }
-            }}>
-              <p>{posts[postId].title}</p>
-            </Link>
-          </div>
-        )
-      })
-    }
-  }
-
   render () {
     const {
         match: {
@@ -48,13 +26,19 @@ class Category extends Component {
             name
           }
         },
-        posts
+        posts,
+        upvotePost,
+        downvotePost
     } = this.props
 
     return (
       <div className='Main'>
         <h1>{name}</h1>
-        {this.renderPosts(posts)}
+        <PostList
+          posts={posts}
+          upvotePost={upvotePost}
+          downvotePost={downvotePost}
+        />
         <Link to={`/`}>
           <p>Back</p>
         </Link>
