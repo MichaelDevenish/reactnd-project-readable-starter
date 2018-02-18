@@ -5,7 +5,7 @@ import { Link, withRouter } from 'react-router-dom'
 import axios from 'axios'
 import PropTypes from 'prop-types'
 import { addPost, upvotePostAsync, downvotePostAsync } from '../actions/post'
-import PostList from './PostList'
+import DetailList from './DetailList'
 
 class Category extends Component {
   componentDidMount () {
@@ -32,12 +32,13 @@ class Category extends Component {
 
     return (
       <div className='Category'>
-        <PostList
+        <DetailList
           posts={posts}
           upvotePost={upvotePost}
           downvotePost={downvotePost}
           title={name}
           titleBack={'/'}
+          listType='post'
         />
       </div>
     )

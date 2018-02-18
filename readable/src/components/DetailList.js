@@ -1,17 +1,29 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import moment from 'moment'
 import classNames from 'classnames'
 import _ from 'lodash'
 import '../App.css'
 import Voter from './Voter'
+import PostItem from './PostItem'
+import CommentItem from './CommentItem'
 
-export default class PostList extends Component {
+export default class DetailList extends Component {
   constructor (props) {
     super(props)
     this.state = {
       sortType: 'index'
+    }
+  }
+
+  itemDetails (details) {
+    switch (this.props.listType) {
+      case 'post':
+        return <PostItem details={details} fromDashboard={this.props.fromDashboard} />
+      case 'comment':
+        return <CommentItem details={details} />
+      default:
+        break
     }
   }
 
@@ -38,13 +50,7 @@ export default class PostList extends Component {
               voteScore={posts[postId].voteScore}
             />
             <div className='postDetails'>
-              <Link to={{
-                pathname: `/post/${posts[postId].id}`,
-                state: { fromDashboard: this.props.fromDashboard }
-              }}>
-                <p>{posts[postId].title}</p>
-                <p>{moment(posts[postId].timestamp).format('MMMM Do YYYY, h:mm:ss a')}</p>
-              </Link>
+              {this.itemDetails(posts[postId])}
             </div>
           </div>
         )
@@ -120,7 +126,7 @@ export default class PostList extends Component {
   }
 }
 
-PostList.propTypes = {
+DetailList.propTypes = {
   posts: PropTypes.shape(
     PropTypes.shape({
       title: PropTypes.string.isRequired,
@@ -130,9 +136,10 @@ PostList.propTypes = {
   upvotePost: PropTypes.func.isRequired,
   downvotePost: PropTypes.func.isRequired,
   fromDashboard: PropTypes.bool.isRequired,
-  title: PropTypes.string
+  title: PropTypes.string,
+  listType: PropTypes.string.isRequired
 }
 
-PostList.defaultProps = {
+DetailList.defaultProps = {
   fromDashboard: false
 }

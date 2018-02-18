@@ -1,5 +1,7 @@
 body {
   background-color: rgb(31, 30, 30);
+  min-width: 500px;
+  word-wrap:break-word;
 }
 
 /* Main page style */
@@ -80,6 +82,7 @@ body {
 
 .post-list h2 {
   padding: 20px;
+  min-width: 130px;
   margin: 0;
   float: left;
   color: rgb(82, 82, 82);
@@ -197,4 +200,43 @@ body {
   height: 2em;
   border: none;
   background-color: whitesmoke;
+}
+
+/* Post details */
+.post-header {
+  margin: 0px;
+  padding: 1em;
+  background-color: lightgray;
+}
+
+.post-header .body {
+  background-color: white;
+  padding: 1em;
+}
+
+.post-header .Voter {
+  border-radius: 2em;
+  margin: 1em;
+  background-color: rgb(51, 51, 51);
+
+}
+
+.post-header .back-link p {
+  margin-top: 3em;
+}
+
+.post-header .post-details {
+  margin-left: 150px;
+}
+
+.post-page .sort-text {
+  padding-top: 0px;
+}
+
+.post-page .list-of-posts {
+  padding-top: 20px;
+}
+
+.comment p {
+  color: whitesmoke;
 }

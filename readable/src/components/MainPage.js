@@ -3,7 +3,7 @@ import '../App.css'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import { upvotePostAsync, downvotePostAsync } from '../actions/post'
-import PostList from './PostList'
+import DetailList from './DetailList'
 
 class MainPage extends Component {
   renderCategories (categories) {
@@ -35,11 +35,12 @@ class MainPage extends Component {
           <h2>Categories</h2>
           {this.renderCategories(categories)}
         </div>
-        <PostList
+        <DetailList
           posts={posts}
           upvotePost={upvotePost}
           downvotePost={downvotePost}
           title='Posts'
+          listType='post'
           fromDashboard
         />
       </div>

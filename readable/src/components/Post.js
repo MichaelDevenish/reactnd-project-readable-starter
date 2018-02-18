@@ -7,6 +7,10 @@ import { addComment, upvoteCommentAsync, downvoteCommentAsync } from '../actions
 import { addPost, upvotePostAsync, downvotePostAsync } from '../actions/post'
 import Voter from './Voter'
 import PropTypes from 'prop-types'
+import moment from 'moment'
+import classNames from 'classnames'
+import _ from 'lodash'
+import DetailList from './DetailList'
 
 class Category extends Component {
   componentDidMount () {
@@ -23,6 +27,43 @@ class Category extends Component {
     .then((resp) => {
       this.props.addPost(resp.data)
     })
+  }
+
+  renderPosts (posts) {
+    switch (this.state.sortType) {
+      case 'score':
+        posts = _.orderBy(posts, ['voteScore'], ['desc'])
+        break
+      case 'date':
+        posts = _.orderBy(posts, ['timestamp'], ['desc'])
+        break
+      default:
+        break
+    }
+    const postIds = Object.keys(posts)
+    if (postIds.length > 0) {
+      return postIds.map((postId, index) => {
+        const even = index % 2 === 0
+        return (
+          <div className={classNames('post', {evenPost: even, oddPost: !even})} key={postId}>
+            <Voter
+              onVoteUp={() => { this.props.upvotePost({ id: posts[postId].id }) }}
+              onVoteDown={() => { this.props.downvotePost({ id: posts[postId].id }) }}
+              voteScore={posts[postId].voteScore}
+            />
+            <div className='postDetails'>
+              <Link to={{
+                pathname: `/post/${posts[postId].id}`,
+                state: { fromDashboard: this.props.fromDashboard }
+              }}>
+                <p>{posts[postId].title}</p>
+                <p>By {posts[postId].author} on {moment(posts[postId].timestamp).format('MMMM Do YYYY, h:mm:ss a')}</p>
+              </Link>
+            </div>
+          </div>
+        )
+      })
+    }
   }
 
   renderComments (comments) {
@@ -51,21 +92,34 @@ class Category extends Component {
         state
       },
       upvotePost,
-      downvotePost
+      downvotePost,
+      upvoteComment,
+      downvoteComment
     } = this.props
-
+    console.log(post)
     return (
       <div className='post-page'>
-        <Voter
-          onVoteUp={() => { upvotePost({id: post.id}) }}
-          onVoteDown={() => { downvotePost({id: post.id}) }}
-          voteScore={post.voteScore}
-        />
-        <h1>{post.title}</h1>
-        {this.renderComments(comments)}
-        <Link to={state ? state.fromDashboard ? `/` : `/category/${post.category}` : '/'}>
-          <p>Back</p>
-        </Link>
+        <div className='post-header'>
+          <Link to={state ? state.fromDashboard ? `/` : `/category/${post.category}` : '/'} className='back-link'><p /></Link>
+          <Voter
+            onVoteUp={() => { upvotePost({id: post.id}) }}
+            onVoteDown={() => { downvotePost({id: post.id}) }}
+            voteScore={post.voteScore}
+          />
+          <div className='post-details'>
+            <h1>{post.title}</h1>
+            <p>By {post.author} on {moment(post.timestamp).format('MMMM Do YYYY, h:mm:ss a')}</p>
+            <p className='body'>{post.body}</p>
+          </div>
+        </div>
+        <div className='posts'>
+          <DetailList
+            posts={comments}
+            upvotePost={upvoteComment}
+            downvotePost={downvoteComment}
+            listType='comment'
+          />
+        </div>
       </div>
     )
   }
