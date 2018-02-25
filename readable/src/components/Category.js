@@ -1,13 +1,22 @@
 import React, { Component } from 'react'
 import '../App.css'
 import { connect } from 'react-redux'
-import { Link, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import axios from 'axios'
 import PropTypes from 'prop-types'
-import { addPost, upvotePostAsync, downvotePostAsync } from '../actions/post'
+import { addPost, upvotePostAsync, downvotePostAsync, createPostAsync } from '../actions/post'
 import DetailList from './DetailList'
+import Modal from 'react-modal'
+import CreatePostModal from './CreatePostModal'
 
 class Category extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      modalOpen: false
+    }
+  }
+
   componentDidMount () {
     axios.get(`http://127.0.0.1:3001/${this.props.match.params.name}/posts`,
     {headers: {Authorization: 'Bearer potato'}})
@@ -27,7 +36,8 @@ class Category extends Component {
         },
         posts,
         upvotePost,
-        downvotePost
+        downvotePost,
+        createPost
     } = this.props
 
     return (
@@ -40,6 +50,19 @@ class Category extends Component {
           titleBack={'/'}
           listType='post'
         />
+        <button className='create-post category-post-create' onClick={() => { this.setState({modalOpen: true}) }} ><span /></button>
+        <Modal
+          className='modal'
+          overlayClassName='overlay'
+          isOpen={this.state.modalOpen}
+          onRequestClose={() => { this.setState({modalOpen: false}) }}
+          contentLabel='Modal'
+        >
+          <CreatePostModal
+            staticCategory={name}
+            onFormSubmit={(e) => { createPost(e); this.setState({modalOpen: false}) }}
+          />
+        </Modal>
       </div>
     )
   }
@@ -73,7 +96,8 @@ function mapDispatchToProps (dispatch) {
   return {
     addPost: (data) => dispatch(addPost(data)),
     upvotePost: (data) => dispatch(upvotePostAsync(data)),
-    downvotePost: (data) => dispatch(downvotePostAsync(data))
+    downvotePost: (data) => dispatch(downvotePostAsync(data)),
+    createPost: (data) => dispatch(createPostAsync(data))
   }
 }
 

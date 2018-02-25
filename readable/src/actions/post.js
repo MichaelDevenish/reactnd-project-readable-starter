@@ -10,34 +10,12 @@
 import uuid from 'uuid/v1'
 import axios from 'axios'
 
-export const CREATE_POST = 'CREATE_POST'
 export const ADD_POST = 'ADD_POST'
 export const DELETE_POST = 'DELETE_POST'
 export const UPVOTE_POST = 'UPVOTE_POST'
 export const DOWNVOTE_POST = 'DOWNVOTE_POST'
 
-// todo add thunks to update the daata and return filled out data
-
-export function createPost ({
-  title,
-  body,
-  author,
-  category
-}) {
-  return {
-    type: CREATE_POST,
-    title,
-    body,
-    author,
-    category,
-    voteScore: 1,
-    deleted: false,
-    timestamp: Date.now(),
-    id: uuid(),
-    commentCount: 0
-  }
-}
-
+// todo add thunks to update the data and return filled out data
 export function addPost ({
   id,
   timestamp,
@@ -50,7 +28,7 @@ export function addPost ({
   commentCount
 }) {
   return {
-    type: CREATE_POST,
+    type: ADD_POST,
     title,
     body,
     author,
@@ -88,6 +66,36 @@ export function downvotePost ({
     type: DOWNVOTE_POST,
     id
   }
+}
+
+export function createPostAsync ({
+  title,
+  body,
+  author,
+  category
+}) {
+  const voteScore = 1
+  const deleted = false
+  const timestamp = Date.now()
+  const id = uuid()
+  const commentCount = 0
+
+  return dispatch => axios.post(`http://127.0.0.1:3001/posts`,
+    { id, timestamp, title, body, author, category },
+    {headers: {Authorization: 'Bearer potato'}})
+    .then((resp) => {
+      dispatch(addPost({
+        title,
+        body,
+        author,
+        category,
+        id,
+        timestamp,
+        voteScore,
+        deleted,
+        commentCount
+      }))
+    })
 }
 
 export function upvotePostAsync ({

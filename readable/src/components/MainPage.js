@@ -2,17 +2,26 @@ import React, { Component } from 'react'
 import '../App.css'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
-import { upvotePostAsync, downvotePostAsync } from '../actions/post'
+import { upvotePostAsync, downvotePostAsync, createPostAsync } from '../actions/post'
 import DetailList from './DetailList'
+import Modal from 'react-modal'
+import CreatePostModal from './CreatePostModal'
 
 class MainPage extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      modalOpen: false
+    }
+  }
+
   renderCategories (categories) {
     const categoryNames = Object.keys(categories)
     if (categoryNames.length > 0) {
       return categoryNames.map((category) => {
         return (
           <div className='category' key={categories[category].path}>
-            <Link to={`/category/${categories[category].path}`}>
+            <Link to={`/${categories[category].path}`}>
               <h3>{categories[category].name}</h3>
             </Link>
           </div>
@@ -26,7 +35,8 @@ class MainPage extends Component {
       posts,
       categories,
       upvotePost,
-      downvotePost
+      downvotePost,
+      createPost
     } = this.props
 
     return (
@@ -43,6 +53,20 @@ class MainPage extends Component {
           listType='post'
           fromDashboard
         />
+        <button className='create-post main-post-create' onClick={() => { this.setState({modalOpen: true}) }} ><span /></button>
+        <Modal
+          className='modal'
+          overlayClassName='overlay'
+          isOpen={this.state.modalOpen}
+          onRequestClose={() => { this.setState({modalOpen: false}) }}
+          contentLabel='Modal'
+        >
+          <CreatePostModal
+            categories={categories}
+            onFormSubmit={(e) => { createPost(e); this.setState({modalOpen: false}) }}
+            closeModal={() => { this.setState({modalOpen: false}) }}
+          />
+        </Modal>
       </div>
     )
   }
@@ -58,25 +82,9 @@ function mapStateToProps ({comments, posts, categories}) {
 function mapDispatchToProps (dispatch) {
   return {
     upvotePost: (data) => dispatch(upvotePostAsync(data)),
-    downvotePost: (data) => dispatch(downvotePostAsync(data))
+    downvotePost: (data) => dispatch(downvotePostAsync(data)),
+    createPost: (data) => dispatch(createPostAsync(data))
   }
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MainPage))
-//  categories: Object
-// .keys(categories)
-// .map((category) => ({
-//   category,
-//   path: categories[category].path,
-//   posts: Object
-//     .keys(posts)
-//     .reduce((relatedPosts, post) => {
-//       relatedPosts[post] = posts[post].category === category
-//         ? posts[post]
-//         : null
-//       if (relatedPosts[post] === null) {
-//         delete relatedPosts[post]
-//       }
-//       return relatedPosts
-//     }, {})
-// }))

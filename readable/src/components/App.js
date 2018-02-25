@@ -32,8 +32,8 @@ class App extends Component {
     return (
       <div className='App'>
         <Route exact path='/' component={MainPage} />
-        <Route path='/category/:name' component={Category} />
-        <Route path='/post/:name' component={Post} />
+        <Route exact path='/:name' component={Category} />
+        <Route exact path='/:category/:name' component={Post} />
       </div>
     )
   }

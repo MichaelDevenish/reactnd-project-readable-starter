@@ -53,7 +53,7 @@ class Category extends Component {
             />
             <div className='postDetails'>
               <Link to={{
-                pathname: `/post/${posts[postId].id}`,
+                pathname: `/${posts[postId].category}/${posts[postId].id}`,
                 state: { fromDashboard: this.props.fromDashboard }
               }}>
                 <p>{posts[postId].title}</p>
@@ -100,7 +100,7 @@ class Category extends Component {
     return (
       <div className='post-page'>
         <div className='post-header'>
-          <Link to={state ? state.fromDashboard ? `/` : `/category/${post.category}` : '/'} className='back-link'><p /></Link>
+          <Link to={state ? state.fromDashboard ? `/` : `/${post.category}` : '/'} className='back-link'><p /></Link>
           <Voter
             onVoteUp={() => { upvotePost({id: post.id}) }}
             onVoteDown={() => { downvotePost({id: post.id}) }}

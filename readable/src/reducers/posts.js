@@ -1,5 +1,4 @@
 import {
-  CREATE_POST,
   DELETE_POST,
   UPVOTE_POST,
   DOWNVOTE_POST,
@@ -11,7 +10,6 @@ import {
 export default function (state = {}, action) {
   switch (action.type) {
     case ADD_POST:
-    case CREATE_POST:
       return {
         ...state,
         [action.id]: action

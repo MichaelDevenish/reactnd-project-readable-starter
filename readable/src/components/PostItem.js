@@ -12,7 +12,7 @@ export default class PostItem extends Component {
     } = this.props
     return (
       <Link to={{
-        pathname: `/post/${details.id}`,
+        pathname: `/${details.category}/${details.id}`,
         state: { fromDashboard: fromDashboard }
       }}>
         <p>{details.title}</p>
