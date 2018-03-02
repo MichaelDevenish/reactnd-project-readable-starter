@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import '../App.css'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
-import { upvotePostAsync, downvotePostAsync, createPostAsync } from '../actions/post'
+import { upvotePostAsync, downvotePostAsync, createPostAsync, deletePostAsync, editPostAsync } from '../actions/post'
 import DetailList from './DetailList'
 import Modal from 'react-modal'
 import CreatePostModal from './CreatePostModal'
@@ -51,6 +51,8 @@ class MainPage extends Component {
           downvotePost={downvotePost}
           title='Posts'
           listType='post'
+          deleteItem={(id) => { this.props.deletePost(id) }}
+          editItem={(data) => { this.props.editPost(data) }}
           fromDashboard
         />
         <button className='create-post main-post-create' onClick={() => { this.setState({modalOpen: true}) }} ><span /></button>
@@ -83,7 +85,9 @@ function mapDispatchToProps (dispatch) {
   return {
     upvotePost: (data) => dispatch(upvotePostAsync(data)),
     downvotePost: (data) => dispatch(downvotePostAsync(data)),
-    createPost: (data) => dispatch(createPostAsync(data))
+    createPost: (data) => dispatch(createPostAsync(data)),
+    deletePost: (data) => dispatch(deletePostAsync(data)),
+    editPost: (data) => dispatch(editPostAsync(data))
   }
 }
 

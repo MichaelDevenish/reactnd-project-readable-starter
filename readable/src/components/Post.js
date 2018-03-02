@@ -3,7 +3,7 @@ import '../App.css'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import axios from 'axios'
-import { addComment, upvoteCommentAsync, downvoteCommentAsync } from '../actions/comment'
+import { addComment, upvoteCommentAsync, downvoteCommentAsync, deleteCommentAsync } from '../actions/comment'
 import { addPost, upvotePostAsync, downvotePostAsync } from '../actions/post'
 import Voter from './Voter'
 import PropTypes from 'prop-types'
@@ -118,6 +118,7 @@ class Category extends Component {
             upvotePost={upvoteComment}
             downvotePost={downvoteComment}
             listType='comment'
+            deleteItem={(id) => { this.props.deleteComment(id) }}
           />
         </div>
       </div>
@@ -155,9 +156,11 @@ function mapStateToProps ({comments, posts, categories}, ownProps) {
     comments: Object
     .keys(comments)
     .reduce((relatedcomments, comment) => {
-      relatedcomments[comment] = comments[comment].parentId === ownProps.match.params.name
-      ? comments[comment]
-      : null
+      if (comments[comment] !== null) {
+        relatedcomments[comment] = comments[comment].parentId === ownProps.match.params.name
+        ? comments[comment]
+        : null
+      }
       if (relatedcomments[comment] === null) {
         delete relatedcomments[comment]
       }
@@ -173,7 +176,8 @@ function mapDispatchToProps (dispatch) {
     upvotePost: (data) => dispatch(upvotePostAsync(data)),
     downvotePost: (data) => dispatch(downvotePostAsync(data)),
     upvoteComment: (data) => dispatch(upvoteCommentAsync(data)),
-    downvoteComment: (data) => dispatch(downvoteCommentAsync(data))
+    downvoteComment: (data) => dispatch(downvoteCommentAsync(data)),
+    deleteComment: (data) => dispatch(deleteCommentAsync(data))
   }
 }
 

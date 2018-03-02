@@ -109,3 +109,13 @@ export function downvoteCommentAsync ({
       dispatch(downvoteComment({id: id}))
     })
 }
+
+export function deleteCommentAsync ({
+  id
+}) {
+  return dispatch => axios.delete(`http://127.0.0.1:3001/comments/${id}`,
+    {headers: {Authorization: 'Bearer potato'}})
+    .then((resp) => {
+      dispatch(deleteComment({id: id}))
+    })
+}

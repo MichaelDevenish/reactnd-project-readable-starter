@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import axios from 'axios'
 import PropTypes from 'prop-types'
-import { addPost, upvotePostAsync, downvotePostAsync, createPostAsync } from '../actions/post'
+import { addPost, deletePostAsync, upvotePostAsync, downvotePostAsync, createPostAsync } from '../actions/post'
 import DetailList from './DetailList'
 import Modal from 'react-modal'
 import CreatePostModal from './CreatePostModal'
@@ -49,6 +49,7 @@ class Category extends Component {
           title={name}
           titleBack={'/'}
           listType='post'
+          deleteItem={(id) => { this.props.deletePost(id) }}
         />
         <button className='create-post category-post-create' onClick={() => { this.setState({modalOpen: true}) }} ><span /></button>
         <Modal
@@ -81,9 +82,11 @@ function mapStateToProps ({comments, posts, categories}, ownProps) {
     posts: Object
     .keys(posts)
     .reduce((relatedPosts, post) => {
-      relatedPosts[post] = posts[post].category === ownProps.match.params.name
-        ? posts[post]
-        : null
+      if (posts[post] !== null) {
+        relatedPosts[post] = posts[post].category === ownProps.match.params.name
+          ? posts[post]
+          : null
+      }
       if (relatedPosts[post] === null) {
         delete relatedPosts[post]
       }
@@ -97,7 +100,8 @@ function mapDispatchToProps (dispatch) {
     addPost: (data) => dispatch(addPost(data)),
     upvotePost: (data) => dispatch(upvotePostAsync(data)),
     downvotePost: (data) => dispatch(downvotePostAsync(data)),
-    createPost: (data) => dispatch(createPostAsync(data))
+    createPost: (data) => dispatch(createPostAsync(data)),
+    deletePost: (data) => dispatch(deletePostAsync(data))
   }
 }
 

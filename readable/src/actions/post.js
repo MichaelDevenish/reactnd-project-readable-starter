@@ -14,6 +14,7 @@ export const ADD_POST = 'ADD_POST'
 export const DELETE_POST = 'DELETE_POST'
 export const UPVOTE_POST = 'UPVOTE_POST'
 export const DOWNVOTE_POST = 'DOWNVOTE_POST'
+export const EDIT_POST = 'EDIT_POST'
 
 // todo add thunks to update the data and return filled out data
 export function addPost ({
@@ -38,6 +39,19 @@ export function addPost ({
     timestamp,
     id,
     commentCount
+  }
+}
+
+export function editPost ({
+  id,
+  title,
+  body
+}) {
+  return {
+    type: EDIT_POST,
+    id,
+    title,
+    body
   }
 }
 
@@ -66,6 +80,29 @@ export function downvotePost ({
     type: DOWNVOTE_POST,
     id
   }
+}
+
+export function editPostAsync ({
+  id,
+  title,
+  body
+}) {
+  return dispatch => axios.put(`http://127.0.0.1:3001/posts/${id}`,
+  { id, title, body },
+  {headers: {Authorization: 'Bearer potato'}})
+  .then((resp) => {
+    dispatch(editPost({id, title, body}))
+  })
+}
+
+export function deletePostAsync ({
+  id
+}) {
+  return dispatch => axios.delete(`http://127.0.0.1:3001/posts/${id}`,
+  {headers: {Authorization: 'Bearer potato'}})
+  .then((resp) => {
+    dispatch(deletePost({id: id}))
+  })
 }
 
 export function createPostAsync ({

@@ -7,12 +7,16 @@ import '../App.css'
 import Voter from './Voter'
 import PostItem from './PostItem'
 import CommentItem from './CommentItem'
+import Modal from 'react-modal'
+import EditModal from './EditModal'
 
 export default class DetailList extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      sortType: 'index'
+      sortType: 'index',
+      currentEditedItem: {},
+      modalOpen: false
     }
   }
 
@@ -28,6 +32,7 @@ export default class DetailList extends Component {
   }
 
   renderPosts (posts) {
+    console.log(posts)
     switch (this.state.sortType) {
       case 'score':
         posts = _.orderBy(posts, ['voteScore'], ['desc'])
@@ -41,19 +46,24 @@ export default class DetailList extends Component {
     const postIds = Object.keys(posts)
     if (postIds.length > 0) {
       return postIds.map((postId, index) => {
-        const even = index % 2 === 0
-        return (
-          <div className={classNames('post', {evenPost: even, oddPost: !even})} key={postId}>
-            <Voter
-              onVoteUp={() => { this.props.upvotePost({ id: posts[postId].id }) }}
-              onVoteDown={() => { this.props.downvotePost({ id: posts[postId].id }) }}
-              voteScore={posts[postId].voteScore}
-            />
-            <div className='postDetails'>
-              {this.itemDetails(posts[postId])}
+        console.log(posts[postId])
+        if (posts[postId] !== undefined && posts[postId] !== null) {
+          const even = index % 2 === 0
+          return (
+            <div className={classNames('post', {evenPost: even, oddPost: !even})} key={postId}>
+              <Voter
+                onVoteUp={() => { this.props.upvotePost({ id: posts[postId].id }) }}
+                onVoteDown={() => { this.props.downvotePost({ id: posts[postId].id }) }}
+                voteScore={posts[postId].voteScore}
+              />
+              <div className='postDetails'>
+                {this.itemDetails(posts[postId])}
+              </div>
+              {this.props.editItem && <button className='edit' onClick={() => { this.setState({modalOpen: true, currentEditedItem: posts[postId]}) }} />}
+              {this.props.deleteItem && <button className='delete' onClick={() => { this.props.deleteItem({id: posts[postId].id}) }} />}
             </div>
-          </div>
-        )
+          )
+        }
       })
     }
   }
@@ -121,6 +131,19 @@ export default class DetailList extends Component {
         <div className='list-of-posts'>
           {this.renderPosts(this.props.posts)}
         </div>
+        <Modal
+          className='modal'
+          overlayClassName='overlay'
+          isOpen={this.state.modalOpen}
+          onRequestClose={() => { this.setState({modalOpen: false}) }}
+          contentLabel='Modal'
+        >
+          <EditModal
+            currentEditedItem={this.state.currentEditedItem}
+            onFormSubmit={(e) => { this.props.editItem(e); this.setState({modalOpen: false}) }}
+            closeModal={() => { this.setState({modalOpen: false}) }}
+          />
+        </Modal>
       </div>
     )
   }
@@ -137,7 +160,9 @@ DetailList.propTypes = {
   downvotePost: PropTypes.func.isRequired,
   fromDashboard: PropTypes.bool.isRequired,
   title: PropTypes.string,
-  listType: PropTypes.string.isRequired
+  listType: PropTypes.string.isRequired,
+  deleteItem: PropTypes.func,
+  editItem: PropTypes.func
 }
 
 DetailList.defaultProps = {
