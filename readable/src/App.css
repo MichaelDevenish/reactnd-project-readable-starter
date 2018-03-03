@@ -37,7 +37,7 @@ body {
     margin-top:0px;
     color: rgb(82, 82, 82);
   }
-  .create-post.main-post-create {
+  .action-button.main-post-create {
     right: 20px;
   }
 }
@@ -59,15 +59,15 @@ body {
     width:         calc(100% - 16em);
   }
 
-  .create-post.main-post-create {
+  .action-button.main-post-create {
     right: 280px;
   }
 }
-.create-post.category-post-create {
+.action-button.category-post-create {
   right: 20px;
 }
 
-.create-post {
+.action-button {
   position: fixed;
   bottom: 20px;
   width: 75px;
@@ -78,15 +78,25 @@ body {
   box-shadow: 0 3px 8px 0 rgba(0,0,0,.24), 0 3px 12px 0 rgba(0,0,0,.12);
 }
 
-.create-post span{
+.action-button span {
   padding-left: 36px;
   padding-bottom: 7.5px;
   padding-top: 7.5px;
-  background: url('./images/plus.svg') no-repeat 0 -4px;
 }
 
-.create-post:focus {
+.action-button .create-post{
+  padding-left: 36px;
+  background: url('./images/plus.svg') no-repeat 0;
+}
+
+.action-button .edit-post{
+  padding-left: 24px;
+  background: url('./images/edit.svg') no-repeat 0;
+}
+
+.action-button:focus {
   outline: 0;
+  cursor: pointer;
 }
 
 /* Post list styles */

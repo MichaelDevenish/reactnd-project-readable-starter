@@ -4,15 +4,24 @@ import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import axios from 'axios'
 import { addComment, upvoteCommentAsync, downvoteCommentAsync, deleteCommentAsync } from '../actions/comment'
-import { addPost, upvotePostAsync, downvotePostAsync } from '../actions/post'
+import { addPost, upvotePostAsync, downvotePostAsync, editPostAsync } from '../actions/post'
 import Voter from './Voter'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import classNames from 'classnames'
 import _ from 'lodash'
 import DetailList from './DetailList'
+import Modal from 'react-modal'
+import EditModal from './EditModal'
 
 class Category extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      modalOpen: false
+    }
+  }
+
   componentDidMount () {
     axios.get(`http://127.0.0.1:3001/posts/${this.props.match.params.name}/comments`,
     {headers: {Authorization: 'Bearer potato'}})
@@ -121,6 +130,20 @@ class Category extends Component {
             deleteItem={(id) => { this.props.deleteComment(id) }}
           />
         </div>
+        <button className='action-button category-post-create' onClick={() => { this.setState({modalOpen: true}) }} ><span className='edit-post' /></button>
+        <Modal
+          className='modal'
+          overlayClassName='overlay'
+          isOpen={this.state.modalOpen}
+          onRequestClose={() => { this.setState({modalOpen: false}) }}
+          contentLabel='Modal'
+        >
+          <EditModal
+            currentEditedItem={this.props.post}
+            onFormSubmit={(e) => { this.props.editPost(e); this.setState({modalOpen: false}) }}
+            closeModal={() => { this.setState({modalOpen: false}) }}
+          />
+        </Modal>
       </div>
     )
   }
@@ -177,7 +200,8 @@ function mapDispatchToProps (dispatch) {
     downvotePost: (data) => dispatch(downvotePostAsync(data)),
     upvoteComment: (data) => dispatch(upvoteCommentAsync(data)),
     downvoteComment: (data) => dispatch(downvoteCommentAsync(data)),
-    deleteComment: (data) => dispatch(deleteCommentAsync(data))
+    deleteComment: (data) => dispatch(deleteCommentAsync(data)),
+    editPost: (data) => dispatch(editPostAsync(data))
   }
 }
 

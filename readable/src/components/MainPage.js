@@ -55,7 +55,7 @@ class MainPage extends Component {
           editItem={(data) => { this.props.editPost(data) }}
           fromDashboard
         />
-        <button className='create-post main-post-create' onClick={() => { this.setState({modalOpen: true}) }} ><span /></button>
+        <button className='action-button main-post-create' onClick={() => { this.setState({modalOpen: true}) }} ><span className='create-post' /></button>
         <Modal
           className='modal'
           overlayClassName='overlay'
