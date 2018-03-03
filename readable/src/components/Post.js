@@ -117,10 +117,10 @@ class Category extends Component {
           />
           <div className='post-details'>
             <h1>{post.title}</h1>
+            <button className='edit-button' onClick={() => { this.setState({modalOpen: true}) }} />
             <p>By {post.author} on {moment(post.timestamp).format('MMMM Do YYYY, h:mm:ss a')}</p>
             <p className='body'>{post.body}</p>
           </div>
-          <button onClick={() => { this.setState({modalOpen: true}) }} ><span /></button>
         </div>
         <div className='posts'>
           <DetailList
@@ -132,10 +132,10 @@ class Category extends Component {
             editItem={(id) => { console.log(id); this.props.editComment(id) }}
           />
         </div>
-        <button className='action-button category-post-create' onClick={() => { this.setState({modalOpen: true}) }} ><span className='edit-post' /></button>
+        <button className='action-button category-post-create' onClick={() => { this.setState({modalOpen: true}) }} ><span className='create-post' /></button>
         <Modal
           className='modal'
-          overlayClassName='overlay'
+          overlayClassName='overlaoptionoptionoptiony'
           isOpen={this.state.modalOpen}
           onRequestClose={() => { this.setState({modalOpen: false}) }}
           contentLabel='Modal'

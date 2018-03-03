@@ -79,7 +79,6 @@ body {
 }
 
 .action-button span {
-  padding-left: 36px;
   padding-bottom: 7.5px;
   padding-top: 7.5px;
 }
@@ -300,6 +299,26 @@ body {
 
 .post-header .post-details {
   margin-left: 150px;
+}
+
+.post-details h1 {
+  display: inline;
+}
+
+.post-details .edit-button {
+  -webkit-mask-image: url('./images/edit.svg');
+  mask-image: url('./images/edit.svg');
+  width: 2em;
+  height: 2em;
+  border: none;
+  background-color: rgb(51, 51, 51);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  margin-left: 10px;
+}
+
+.post-details .edit-button:hover {
+  background-color: darkcyan;
 }
 
 .post-page .sort-text {
