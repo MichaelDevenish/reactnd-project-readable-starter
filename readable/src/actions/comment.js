@@ -16,6 +16,7 @@ export const ADD_COMMENT = 'ADD_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const UPVOTE_COMMENT = 'UPVOTE_COMMENT'
 export const DOWNVOTE_COMMENT = 'DOWNVOTE_COMMENT'
+export const EDIT_COMMENT = 'EDIT_COMMENT'
 
 // todo add thunks to update the daata and return filled out data
 
@@ -35,6 +36,17 @@ export function createComment ({
     deleted: false,
     timestamp: Date.now(),
     id: uuid()
+  }
+}
+
+export function editComment ({
+  id,
+  body
+}) {
+  return {
+    type: EDIT_COMMENT,
+    id,
+    body
   }
 }
 
@@ -86,6 +98,18 @@ export function downvoteComment ({
     type: DOWNVOTE_COMMENT,
     id
   }
+}
+
+export function editCommentAsync ({
+  id,
+  body
+}) {
+  return dispatch => axios.put(`http://127.0.0.1:3001/comments/${id}`,
+    {body},
+    {headers: {Authorization: 'Bearer potato'}})
+    .then((resp) => {
+      dispatch(editComment({id, body}))
+    })
 }
 
 export function upvoteCommentAsync ({

@@ -3,7 +3,7 @@ import '../App.css'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import axios from 'axios'
-import { addComment, upvoteCommentAsync, downvoteCommentAsync, deleteCommentAsync } from '../actions/comment'
+import { addComment, upvoteCommentAsync, downvoteCommentAsync, deleteCommentAsync, editCommentAsync } from '../actions/comment'
 import { addPost, upvotePostAsync, downvotePostAsync, editPostAsync } from '../actions/post'
 import Voter from './Voter'
 import PropTypes from 'prop-types'
@@ -120,6 +120,7 @@ class Category extends Component {
             <p>By {post.author} on {moment(post.timestamp).format('MMMM Do YYYY, h:mm:ss a')}</p>
             <p className='body'>{post.body}</p>
           </div>
+          <button onClick={() => { this.setState({modalOpen: true}) }} ><span /></button>
         </div>
         <div className='posts'>
           <DetailList
@@ -128,6 +129,7 @@ class Category extends Component {
             downvotePost={downvoteComment}
             listType='comment'
             deleteItem={(id) => { this.props.deleteComment(id) }}
+            editItem={(id) => { console.log(id); this.props.editComment(id) }}
           />
         </div>
         <button className='action-button category-post-create' onClick={() => { this.setState({modalOpen: true}) }} ><span className='edit-post' /></button>
@@ -201,6 +203,7 @@ function mapDispatchToProps (dispatch) {
     upvoteComment: (data) => dispatch(upvoteCommentAsync(data)),
     downvoteComment: (data) => dispatch(downvoteCommentAsync(data)),
     deleteComment: (data) => dispatch(deleteCommentAsync(data)),
+    editComment: (data) => dispatch(editCommentAsync(data)),
     editPost: (data) => dispatch(editPostAsync(data))
   }
 }

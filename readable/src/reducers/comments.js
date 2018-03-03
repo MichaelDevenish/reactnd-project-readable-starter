@@ -3,13 +3,22 @@ import {
   DELETE_COMMENT,
   UPVOTE_COMMENT,
   DOWNVOTE_COMMENT,
-  ADD_COMMENT
+  ADD_COMMENT,
+  EDIT_COMMENT
 } from '../actions/comment'
 
 // todo add modification of state
 
 export default function (state = {}, action) {
   switch (action.type) {
+    case EDIT_COMMENT:
+      return {
+        ...state,
+        [action.id]: {
+          ...state[action.id],
+          body: action.body
+        }
+      }
     case ADD_COMMENT:
     case CREATE_COMMENT:
       return {
