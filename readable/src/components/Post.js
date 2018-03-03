@@ -3,7 +3,7 @@ import '../App.css'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import axios from 'axios'
-import { addComment, upvoteCommentAsync, downvoteCommentAsync, deleteCommentAsync, editCommentAsync } from '../actions/comment'
+import { addComment, upvoteCommentAsync, downvoteCommentAsync, deleteCommentAsync, editCommentAsync, createCommentAsync } from '../actions/comment'
 import { addPost, upvotePostAsync, downvotePostAsync, editPostAsync } from '../actions/post'
 import Voter from './Voter'
 import PropTypes from 'prop-types'
@@ -13,12 +13,14 @@ import _ from 'lodash'
 import DetailList from './DetailList'
 import Modal from 'react-modal'
 import EditModal from './EditModal'
+import CreateCommentModal from './CreateCommentModal'
 
 class Category extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      modalOpen: false
+      modalOpen: false,
+      CreateModalOpen: false
     }
   }
 
@@ -103,7 +105,8 @@ class Category extends Component {
       upvotePost,
       downvotePost,
       upvoteComment,
-      downvoteComment
+      downvoteComment,
+      createComment
     } = this.props
     console.log(post)
     return (
@@ -132,7 +135,7 @@ class Category extends Component {
             editItem={(id) => { console.log(id); this.props.editComment(id) }}
           />
         </div>
-        <button className='action-button category-post-create' onClick={() => { this.setState({modalOpen: true}) }} ><span className='create-post' /></button>
+        <button className='action-button category-post-create' onClick={() => { this.setState({CreateModalOpen: true}) }} ><span className='create-post' /></button>
         <Modal
           className='modal'
           overlayClassName='overlaoptionoptionoptiony'
@@ -144,6 +147,23 @@ class Category extends Component {
             currentEditedItem={this.props.post}
             onFormSubmit={(e) => { this.props.editPost(e); this.setState({modalOpen: false}) }}
             closeModal={() => { this.setState({modalOpen: false}) }}
+          />
+        </Modal>
+        <Modal
+          className='modal'
+          overlayClassName='overlay'
+          isOpen={this.state.CreateModalOpen}
+          onRequestClose={() => { this.setState({CreateModalOpen: false}) }}
+          contentLabel='Modal'
+        >
+          <CreateCommentModal
+            parentId={this.props.post.id}
+            category={this.props.post.category}
+            onFormSubmit={(e) => {
+              createComment(e)
+              this.setState({CreateModalOpen: false})
+            }}
+            closeModal={() => { this.setState({CreateModalOpen: false}) }}
           />
         </Modal>
       </div>
@@ -204,7 +224,8 @@ function mapDispatchToProps (dispatch) {
     downvoteComment: (data) => dispatch(downvoteCommentAsync(data)),
     deleteComment: (data) => dispatch(deleteCommentAsync(data)),
     editComment: (data) => dispatch(editCommentAsync(data)),
-    editPost: (data) => dispatch(editPostAsync(data))
+    editPost: (data) => dispatch(editPostAsync(data)),
+    createComment: (data) => dispatch(createCommentAsync(data))
   }
 }
 

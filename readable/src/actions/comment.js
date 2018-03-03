@@ -20,18 +20,13 @@ export const EDIT_COMMENT = 'EDIT_COMMENT'
 
 // todo add thunks to update the daata and return filled out data
 
-export function createComment ({
-  parentId,
-  body,
-  author,
-  category
-}) {
+export function createComment (e) {
   return {
     type: CREATE_COMMENT,
-    parentId,
-    body,
-    author,
-    category,
+    parentId: e.parentId,
+    body: e.body,
+    author: e.author,
+    category: e.category,
     voteScore: 1,
     deleted: false,
     timestamp: Date.now(),
@@ -98,6 +93,34 @@ export function downvoteComment ({
     type: DOWNVOTE_COMMENT,
     id
   }
+}
+
+export function createCommentAsync ({
+  parentId,
+  body,
+  author,
+  category
+}) {
+  const voteScore = 1
+  const deleted = false
+  const timestamp = Date.now()
+  const id = uuid()
+
+  return dispatch => axios.post(`http://127.0.0.1:3001/comments`,
+    { id, timestamp, parentId, body, author, category },
+    {headers: {Authorization: 'Bearer potato'}})
+    .then((resp) => {
+      dispatch(addComment({
+        parentId,
+        body,
+        author,
+        category,
+        id,
+        timestamp,
+        voteScore,
+        deleted
+      }))
+    })
 }
 
 export function editCommentAsync ({
