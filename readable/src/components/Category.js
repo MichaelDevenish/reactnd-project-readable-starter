@@ -1,11 +1,10 @@
 import axios from 'axios'
-import Modal from 'react-modal'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import DetailList from './DetailList'
-import CreatePostModal from './CreatePostModal'
+import CreatePostModal from './modals/CreatePostModal'
 import {
   addPost,
   deletePostAsync,
@@ -58,20 +57,18 @@ class Category extends Component {
           deleteItem={(id) => { this.props.deletePost(id) }}
           editItem={(data) => { this.props.editPost(data) }}
         />
-        <button className='action-button category-post-create' onClick={() => { this.setState({modalOpen: true}) }} ><span /></button>
-        <Modal
-          className='modal'
-          overlayClassName='overlay'
-          isOpen={this.state.modalOpen}
-          onRequestClose={() => { this.setState({modalOpen: false}) }}
-          contentLabel='Modal'
+        <button
+          className='action-button category-post-create'
+          onClick={() => { this.setState({modalOpen: true}) }}
         >
-          <CreatePostModal
-            staticCategory={name}
-            onFormSubmit={(e) => { createPost(e); this.setState({modalOpen: false}) }}
-            closeModal={() => { this.setState({modalOpen: false}) }}
-          />
-        </Modal>
+          <span className='create-post' />
+        </button>
+        <CreatePostModal
+          staticCategory={name}
+          isOpen={this.state.modalOpen}
+          onFormSubmit={(e) => { createPost(e); this.setState({modalOpen: false}) }}
+          closeModal={() => { this.setState({modalOpen: false}) }}
+        />
       </div>
     )
   }

@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import PropTypes from 'prop-types'
 import moment from 'moment'
-import '../App.css'
 
 export default class PostItem extends Component {
   render () {
@@ -21,11 +19,4 @@ export default class PostItem extends Component {
       </Link>
     )
   }
-}
-
-PostItem.propTypes = {
-  details: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    voteScore: PropTypes.number.isRequired
-  })
 }

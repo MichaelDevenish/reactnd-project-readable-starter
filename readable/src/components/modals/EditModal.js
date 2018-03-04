@@ -1,45 +1,49 @@
 import React, { Component } from 'react'
-import '../App.css'
-import PropTypes from 'prop-types'
 import Modal from 'react-modal'
 
-export default class CreatePostModal extends Component {
+export default class EditModal extends Component {
   constructor (props) {
     super(props)
 
-    const category = this.props.staticCategory
-      ? this.props.staticCategory
-      : 'none'
-
+    const {
+      currentEditedItem: {
+        title,
+        body,
+        id
+      },
+      isOpen
+    } = props
 
     this.state = {
-      category: category,
-      title: '',
-      author: '',
-      body: '',
-      modalOpen: this.props.isOpen
+      title: title,
+      body: body,
+      id: id,
+      modalOpen: isOpen
     }
 
     this.handleTitleChange = this.handleTitleChange.bind(this)
-    this.handleAuthorChange = this.handleAuthorChange.bind(this)
     this.handleBodyChange = this.handleBodyChange.bind(this)
-    this.handleCategoryChange = this.handleCategoryChange.bind(this)
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
   }
 
   componentWillReceiveProps (newProps) {
+    if (newProps.currentEditedItem) {
+      this.setState({
+        title: newProps.currentEditedItem.title,
+        body: newProps.currentEditedItem.body,
+        id: newProps.currentEditedItem.id
+      })
+    }
     this.setState({modalOpen: newProps.isOpen})
   }
 
   get submitDisabled () {
     const {
-      category,
       title,
-      author,
       body
     } = this.state
 
-    return category === 'none' || title === '' || author === '' || body === ''
+    return title === '' || body === ''
   }
 
   generateSelect () {
@@ -61,16 +65,8 @@ export default class CreatePostModal extends Component {
     return options
   }
 
-  handleCategoryChange (event) {
-    this.setState({ category: event.target.value })
-  }
-
   handleTitleChange (event) {
     this.setState({title: event.target.value})
-  }
-
-  handleAuthorChange (event) {
-    this.setState({author: event.target.value})
   }
 
   handleBodyChange (event) {
@@ -79,10 +75,9 @@ export default class CreatePostModal extends Component {
 
   handleFormSubmit (event) {
     const {
-      category,
       title,
-      author,
-      body
+      body,
+      id
     } = this.state
 
     event.preventDefault()
@@ -91,8 +86,7 @@ export default class CreatePostModal extends Component {
       this.props.onFormSubmit({
         title,
         body,
-        author,
-        category
+        id
       })
     }
   }
@@ -107,24 +101,20 @@ export default class CreatePostModal extends Component {
         contentLabel='Modal'
       >
         <button className='exit-modal' onClick={() => { this.setState({modalOpen: false}); this.props.closeModal() }} />
-        <h1>Create New Post</h1>
+        <h1>Edit</h1>
         <form onSubmit={(event) => { this.handleFormSubmit(event) }}>
-
-          {!this.props.staticCategory &&
+          { this.props.currentEditedItem.title &&
+          <div>
+            <h3>Title</h3>
+            <input type='text' value={this.state.title} onChange={this.handleTitleChange} />
+          </div>
+          }
+          { this.props.currentEditedItem.body &&
             <div>
-              <h3>Category</h3>
-              <select value={this.state.category} onChange={this.handleCategoryChange}>
-                {this.generateSelect()}
-              </select>
+              <h3>Body</h3>
+              <textarea value={this.state.body} onChange={this.handleBodyChange} />
             </div>
           }
-          <h3>Author</h3>
-          <input type='text' value={this.state.author} onChange={this.handleAuthorChange} />
-          <h3>Title</h3>
-          <input type='text' value={this.state.title} onChange={this.handleTitleChange} />
-          <h3>Body</h3>
-          <textarea value={this.state.body} onChange={this.handleBodyChange} />
-
           <input type='submit' value='Submit' className='submit' disabled={this.submitDisabled} />
         </form>
       </Modal>
@@ -132,9 +122,4 @@ export default class CreatePostModal extends Component {
   }
 }
 
-CreatePostModal.propTypes = {
-  categories: PropTypes.array,
-  onFormSubmit: PropTypes.func.isRequired,
-  staticCategory: PropTypes.string,
-  isOpen: PropTypes.bool.isRequired
-}
+Modal.setAppElement('#root')

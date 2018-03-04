@@ -1,14 +1,13 @@
-import _ from 'lodash'
 import axios from 'axios'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
-import Voter from './Voter'
-import EditModal from './EditModal'
+import Voter from './smalls/Voter'
 import DetailList from './DetailList'
-import CreateCommentModal from './CreateCommentModal'
+import EditModal from './modals/EditModal'
+import CreateCommentModal from './modals/CreateCommentModal'
 import {
   addComment,
   upvoteCommentAsync,
@@ -109,23 +108,6 @@ class Category extends Component {
       </div>
     )
   }
-}
-
-Category.propTypes = {
-  post: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    voteScore: PropTypes.number.isRequired
-  }).isRequired,
-  comments: PropTypes.objectOf(
-    PropTypes.shape({
-      body: PropTypes.string.isRequired
-    })
-  ).isRequired,
-  location: PropTypes.shape({
-    state: PropTypes.shape({
-      fromDashboard: PropTypes.bool.isRequired
-    })
-  }).isRequired
 }
 
 Category.defaultProps = {

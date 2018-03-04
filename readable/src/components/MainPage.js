@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import DetailList from './DetailList'
-import CreatePostModal from './CreatePostModal'
+import CreatePostModal from './modals/CreatePostModal'
 import {
   upvotePostAsync,
   downvotePostAsync,
@@ -69,6 +69,7 @@ class MainPage extends Component {
           categories={categories}
           isOpen={this.state.modalOpen}
           onFormSubmit={(e) => { createPost(e); this.setState({modalOpen: false}) }}
+          closeModal={() => { this.setState({modalOpen: false}) }}
         />
       </div>
     )

@@ -1,3 +1,4 @@
+import '../App.css'
 import axios from 'axios'
 import Post from './Post'
 import { connect } from 'react-redux'

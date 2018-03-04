@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
-import '../App.css'
-import PropTypes from 'prop-types'
 
 export default class Voter extends Component {
   constructor (props) {
@@ -41,10 +39,4 @@ export default class Voter extends Component {
       </div>
     )
   }
-}
-
-Voter.propTypes = {
-  onVoteUp: PropTypes.func.isRequired,
-  onVoteDown: PropTypes.func.isRequired,
-  voteScore: PropTypes.number.isRequired
 }

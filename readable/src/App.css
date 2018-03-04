@@ -401,8 +401,8 @@ body {
 
 .modal h1 {
   color: rgb(82, 82, 82);
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 0;
+  margin-bottom: 0;
   margin-left: 60px;
 }
 

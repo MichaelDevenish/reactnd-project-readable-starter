@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import '../App.css'
-import PropTypes from 'prop-types'
 import Modal from 'react-modal'
 
 export default class CreatePostModal extends Component {
@@ -22,6 +20,7 @@ export default class CreatePostModal extends Component {
     this.handleTitleChange = this.handleTitleChange.bind(this)
     this.handleAuthorChange = this.handleAuthorChange.bind(this)
     this.handleBodyChange = this.handleBodyChange.bind(this)
+    this.handleCategoryChange = this.handleCategoryChange.bind(this)
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
   }
 
@@ -31,11 +30,13 @@ export default class CreatePostModal extends Component {
 
   get submitDisabled () {
     const {
+      category,
+      title,
       author,
       body
     } = this.state
 
-    return author === '' || body === ''
+    return category === 'none' || title === '' || author === '' || body === ''
   }
 
   generateSelect () {
@@ -43,7 +44,7 @@ export default class CreatePostModal extends Component {
       categories
     } = this.props
 
-    let options = [<option value='none' key='Please Select a Category' disabled>Please Select a Category</option>]
+    let options = [<option value='none' key='Please Select a Category' disabled>Please Select a Category</option>];
 
     options = options.concat(Object.keys(categories).map((category) => {
       return (
@@ -55,6 +56,10 @@ export default class CreatePostModal extends Component {
         </option>)
     }))
     return options
+  }
+
+  handleCategoryChange (event) {
+    this.setState({ category: event.target.value })
   }
 
   handleTitleChange (event) {
@@ -71,6 +76,8 @@ export default class CreatePostModal extends Component {
 
   handleFormSubmit (event) {
     const {
+      category,
+      title,
       author,
       body
     } = this.state
@@ -79,10 +86,10 @@ export default class CreatePostModal extends Component {
     if (!this.submitDisabled) {
       this.setState({modalOpen: false})
       this.props.onFormSubmit({
-        parentId: this.props.parentId,
-        category: this.props.category,
+        title,
         body,
-        author
+        author,
+        category
       })
     }
   }
@@ -93,15 +100,25 @@ export default class CreatePostModal extends Component {
         className='modal'
         overlayClassName='overlay'
         isOpen={this.state.modalOpen}
-        onRequestClose={() => { this.setState({CreateModalOpen: false}) }}
+        onRequestClose={() => { this.setState({modalOpen: false}) }}
         contentLabel='Modal'
       >
         <button className='exit-modal' onClick={() => { this.setState({modalOpen: false}); this.props.closeModal() }} />
-        <h1>Create New Comment</h1>
+        <h1>Create New Post</h1>
         <form onSubmit={(event) => { this.handleFormSubmit(event) }}>
 
+          {!this.props.staticCategory &&
+            <div>
+              <h3>Category</h3>
+              <select value={this.state.category} onChange={this.handleCategoryChange}>
+                {this.generateSelect()}
+              </select>
+            </div>
+          }
           <h3>Author</h3>
           <input type='text' value={this.state.author} onChange={this.handleAuthorChange} />
+          <h3>Title</h3>
+          <input type='text' value={this.state.title} onChange={this.handleTitleChange} />
           <h3>Body</h3>
           <textarea value={this.state.body} onChange={this.handleBodyChange} />
 
@@ -112,10 +129,4 @@ export default class CreatePostModal extends Component {
   }
 }
 
-CreatePostModal.propTypes = {
-  parentId: PropTypes.string.isRequired,
-  onFormSubmit: PropTypes.func.isRequired,
-  staticCategory: PropTypes.string,
-  closeModal: PropTypes.func.isRequired,
-  isOpen: PropTypes.bool.isRequired
-}
+Modal.setAppElement('#root')
