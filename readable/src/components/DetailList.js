@@ -40,6 +40,7 @@ export default class DetailList extends Component {
               editAction={() => { this.setState({modalOpen: true, currentEditedItem: posts[postId]}) }}
               deleteAction={() => { this.props.deleteItem({id: posts[postId].id}) }}
               listType={this.props.listType}
+              fromDashboard={this.props.fromDashboard}
             />
           )
         }
@@ -91,12 +92,12 @@ export default class DetailList extends Component {
 
   render () {
     return (
-      <div className='post-list'>
-        <div className='post-list-header'>
+      <div className='detail-list'>
+        <div className='detail-list-header'>
           {this.title}
           {this.sortText}
         </div>
-        <div className='list-of-posts'>
+        <div className='detail-items'>
           {this.renderPosts(this.props.posts)}
         </div>
         <EditModal

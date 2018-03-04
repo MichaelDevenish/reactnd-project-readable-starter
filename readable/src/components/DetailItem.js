@@ -24,7 +24,7 @@ export default class DetailItem extends Component {
 
     if (editAction) {
       return <button
-        className='edit'
+        className='edit icon-button'
         onClick={() => {
           editAction(item)
         }}
@@ -40,7 +40,7 @@ export default class DetailItem extends Component {
 
     if (deleteAction) {
       return <button
-        className='delete'
+        className='delete icon-button'
         onClick={() => {
           deleteAction({
             id: item.id
@@ -59,13 +59,13 @@ export default class DetailItem extends Component {
     } = this.props
 
     return (
-      <div className={classNames('post', {evenPost: even, oddPost: !even})} >
+      <div className={classNames('detail-item', {evenPost: even, oddPost: !even})} >
         <Voter
           onVoteUp={() => { upvoteItem({ id: item.id }) }}
           onVoteDown={() => { downvoteItem({ id: item.id }) }}
           voteScore={item.voteScore}
         />
-        <div className='postDetails'>
+        <div className='detail-item-custom-section'>
           {this.itemDetails(item)}
         </div>
         {this.editItem}

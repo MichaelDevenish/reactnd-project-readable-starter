@@ -73,7 +73,7 @@ class Category extends Component {
           />
           <div className='post-details'>
             <h1>{post.title}</h1>
-            <button className='edit-button' onClick={() => { this.setState({modalOpen: true}) }} />
+            <button className='icon-button edit-button' onClick={() => { this.setState({modalOpen: true}) }} />
             <p>By {post.author} on {moment(post.timestamp).format('MMMM Do YYYY, h:mm:ss a')}</p>
             <p className='body'>{post.body}</p>
           </div>
@@ -88,7 +88,7 @@ class Category extends Component {
             editItem={(id) => { this.props.editComment(id) }}
           />
         </div>
-        <button className='action-button category-post-create' onClick={() => { this.setState({CreateModalOpen: true}) }} ><span className='create-post' /></button>
+        <button className='action-button category-post-create' onClick={() => { this.setState({CreateModalOpen: true}) }} ><span className='create-action' /></button>
         <EditModal
           currentEditedItem={this.props.post}
           isOpen={this.state.modalOpen}

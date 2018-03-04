@@ -1,5 +1,4 @@
 import axios from 'axios'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
@@ -61,7 +60,7 @@ class Category extends Component {
           className='action-button category-post-create'
           onClick={() => { this.setState({modalOpen: true}) }}
         >
-          <span className='create-post' />
+          <span className='create-action' />
         </button>
         <CreatePostModal
           staticCategory={name}
@@ -72,14 +71,6 @@ class Category extends Component {
       </div>
     )
   }
-}
-
-Category.propTypes = {
-  posts: PropTypes.objectOf(
-    PropTypes.shape({
-      title: PropTypes.string.isRequired
-    })
-  ).isRequired
 }
 
 function mapStateToProps ({comments, posts, categories}, ownProps) {

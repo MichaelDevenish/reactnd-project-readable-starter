@@ -63,7 +63,7 @@ class MainPage extends Component {
           className='action-button main-post-create'
           onClick={() => { this.setState({modalOpen: true}) }}
         >
-          <span className='create-post' />
+          <span className='create-action' />
         </button>
         <CreatePostModal
           categories={categories}

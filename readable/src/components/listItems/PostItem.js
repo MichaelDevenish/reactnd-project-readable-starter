@@ -9,10 +9,13 @@ export default class PostItem extends Component {
         fromDashboard
     } = this.props
     return (
-      <Link to={{
-        pathname: `/${details.category}/${details.id}`,
-        state: { fromDashboard: fromDashboard }
-      }}>
+      <Link
+        to={{
+          pathname: `/${details.category}/${details.id}`,
+          state: { fromDashboard: fromDashboard }
+        }}
+        className='post-item'
+      >
         <p>{details.title}</p>
         <p>By {details.author} on {moment(details.timestamp).format('MMMM Do YYYY, h:mm:ss a')}</p>
         <p>Comment count: {details.commentCount} </p>
