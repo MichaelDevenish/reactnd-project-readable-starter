@@ -1,38 +1,11 @@
-// Attribute	Type	Description
-// id	String	Unique identifier
-// parentId	String	id of the parent post
-// timestamp	Integer	Time created - default data tracks this in Unix time. You can use Date.now() to get this number
-// body	String	Comment body
-// author	String	Comment author
-// voteScore	Integer	Net votes the comment has received (default: 1)
-// deleted	Boolean	Flag if comment has been 'deleted' (inaccessible by the front end), (default: false)
-// parentDeleted	Boolean	Flag for when the the parent post was deleted, but the comment itself was not.
-
 import uuid from 'uuid/v1'
 import axios from 'axios'
 
-export const CREATE_COMMENT = 'CREATE_COMMENT'
 export const ADD_COMMENT = 'ADD_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const UPVOTE_COMMENT = 'UPVOTE_COMMENT'
 export const DOWNVOTE_COMMENT = 'DOWNVOTE_COMMENT'
 export const EDIT_COMMENT = 'EDIT_COMMENT'
-
-// todo add thunks to update the daata and return filled out data
-
-export function createComment (e) {
-  return {
-    type: CREATE_COMMENT,
-    parentId: e.parentId,
-    body: e.body,
-    author: e.author,
-    category: e.category,
-    voteScore: 1,
-    deleted: false,
-    timestamp: Date.now(),
-    id: uuid()
-  }
-}
 
 export function editComment ({
   id,
@@ -56,7 +29,7 @@ export function addComment ({
   id
   }) {
   return {
-    type: CREATE_COMMENT,
+    type: ADD_COMMENT,
     parentId,
     timestamp,
     body,

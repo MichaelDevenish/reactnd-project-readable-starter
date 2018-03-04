@@ -1,12 +1,3 @@
-// Attribute	Type	Description
-// id	String	Unique identifier
-// timestamp	Integer	Time created - default data tracks this in Unix time. You can use Date.now() to get this number
-// title	String	Post title
-// body	String	Post body
-// author	String	Post author
-// category	String	Should be one of the categories provided by the server
-// voteScore	Integer	Net votes the post has received (default: 1)
-// deleted	Boolean	Flag if post has been 'deleted' (inaccessible by the front end), (default: false)
 import uuid from 'uuid/v1'
 import axios from 'axios'
 
@@ -16,7 +7,6 @@ export const UPVOTE_POST = 'UPVOTE_POST'
 export const DOWNVOTE_POST = 'DOWNVOTE_POST'
 export const EDIT_POST = 'EDIT_POST'
 
-// todo add thunks to update the data and return filled out data
 export function addPost ({
   id,
   timestamp,

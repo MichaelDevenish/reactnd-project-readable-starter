@@ -1,11 +1,15 @@
 import React, { Component } from 'react'
-import '../App.css'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
-import { upvotePostAsync, downvotePostAsync, createPostAsync, deletePostAsync, editPostAsync } from '../actions/post'
 import DetailList from './DetailList'
-import Modal from 'react-modal'
 import CreatePostModal from './CreatePostModal'
+import {
+  upvotePostAsync,
+  downvotePostAsync,
+  createPostAsync,
+  deletePostAsync,
+  editPostAsync
+} from '../actions/post'
 
 class MainPage extends Component {
   constructor (props) {
@@ -55,20 +59,17 @@ class MainPage extends Component {
           editItem={(data) => { this.props.editPost(data) }}
           fromDashboard
         />
-        <button className='action-button main-post-create' onClick={() => { this.setState({modalOpen: true}) }} ><span className='create-post' /></button>
-        <Modal
-          className='modal'
-          overlayClassName='overlay'
-          isOpen={this.state.modalOpen}
-          onRequestClose={() => { this.setState({modalOpen: false}) }}
-          contentLabel='Modal'
+        <button
+          className='action-button main-post-create'
+          onClick={() => { this.setState({modalOpen: true}) }}
         >
-          <CreatePostModal
-            categories={categories}
-            onFormSubmit={(e) => { createPost(e); this.setState({modalOpen: false}) }}
-            closeModal={() => { this.setState({modalOpen: false}) }}
-          />
-        </Modal>
+          <span className='create-post' />
+        </button>
+        <CreatePostModal
+          categories={categories}
+          isOpen={this.state.modalOpen}
+          onFormSubmit={(e) => { createPost(e); this.setState({modalOpen: false}) }}
+        />
       </div>
     )
   }

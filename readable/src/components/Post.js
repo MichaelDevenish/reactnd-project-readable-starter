@@ -1,19 +1,28 @@
-import React, { Component } from 'react'
-import '../App.css'
-import { connect } from 'react-redux'
-import { Link, withRouter } from 'react-router-dom'
-import axios from 'axios'
-import { addComment, upvoteCommentAsync, downvoteCommentAsync, deleteCommentAsync, editCommentAsync, createCommentAsync } from '../actions/comment'
-import { addPost, upvotePostAsync, downvotePostAsync, editPostAsync } from '../actions/post'
-import Voter from './Voter'
-import PropTypes from 'prop-types'
-import moment from 'moment'
-import classNames from 'classnames'
 import _ from 'lodash'
-import DetailList from './DetailList'
-import Modal from 'react-modal'
+import axios from 'axios'
+import moment from 'moment'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import React, { Component } from 'react'
+import { Link, withRouter } from 'react-router-dom'
+import Voter from './Voter'
 import EditModal from './EditModal'
+import DetailList from './DetailList'
 import CreateCommentModal from './CreateCommentModal'
+import {
+  addComment,
+  upvoteCommentAsync,
+  downvoteCommentAsync,
+  deleteCommentAsync,
+  editCommentAsync,
+  createCommentAsync
+} from '../actions/comment'
+import {
+  addPost,
+  upvotePostAsync,
+  downvotePostAsync,
+  editPostAsync
+} from '../actions/post'
 
 class Category extends Component {
   constructor (props) {
@@ -40,61 +49,6 @@ class Category extends Component {
     })
   }
 
-  renderPosts (posts) {
-    switch (this.state.sortType) {
-      case 'score':
-        posts = _.orderBy(posts, ['voteScore'], ['desc'])
-        break
-      case 'date':
-        posts = _.orderBy(posts, ['timestamp'], ['desc'])
-        break
-      default:
-        break
-    }
-    const postIds = Object.keys(posts)
-    if (postIds.length > 0) {
-      return postIds.map((postId, index) => {
-        const even = index % 2 === 0
-        return (
-          <div className={classNames('post', {evenPost: even, oddPost: !even})} key={postId}>
-            <Voter
-              onVoteUp={() => { this.props.upvotePost({ id: posts[postId].id }) }}
-              onVoteDown={() => { this.props.downvotePost({ id: posts[postId].id }) }}
-              voteScore={posts[postId].voteScore}
-            />
-            <div className='postDetails'>
-              <Link to={{
-                pathname: `/${posts[postId].category}/${posts[postId].id}`,
-                state: { fromDashboard: this.props.fromDashboard }
-              }}>
-                <p>{posts[postId].title}</p>
-                <p>By {posts[postId].author} on {moment(posts[postId].timestamp).format('MMMM Do YYYY, h:mm:ss a')}</p>
-              </Link>
-            </div>
-          </div>
-        )
-      })
-    }
-  }
-
-  renderComments (comments) {
-    const commentIds = Object.keys(comments)
-    if (commentIds.length > 0) {
-      return commentIds.map((commentId) => {
-        return (
-          <div className='comment' key={commentId}>
-            <Voter
-              onVoteUp={() => { this.props.upvoteComment({id: commentId}) }}
-              onVoteDown={() => { this.props.downvoteComment({id: commentId}) }}
-              voteScore={comments[commentId].voteScore}
-            />
-            <p>{comments[commentId].body}</p>
-          </div>
-        )
-      })
-    }
-  }
-
   render () {
     const {
       comments,
@@ -108,7 +62,7 @@ class Category extends Component {
       downvoteComment,
       createComment
     } = this.props
-    console.log(post)
+
     return (
       <div className='post-page'>
         <div className='post-header'>
@@ -132,40 +86,26 @@ class Category extends Component {
             downvotePost={downvoteComment}
             listType='comment'
             deleteItem={(id) => { this.props.deleteComment(id) }}
-            editItem={(id) => { console.log(id); this.props.editComment(id) }}
+            editItem={(id) => { this.props.editComment(id) }}
           />
         </div>
         <button className='action-button category-post-create' onClick={() => { this.setState({CreateModalOpen: true}) }} ><span className='create-post' /></button>
-        <Modal
-          className='modal'
-          overlayClassName='overlaoptionoptionoptiony'
+        <EditModal
+          currentEditedItem={this.props.post}
           isOpen={this.state.modalOpen}
-          onRequestClose={() => { this.setState({modalOpen: false}) }}
-          contentLabel='Modal'
-        >
-          <EditModal
-            currentEditedItem={this.props.post}
-            onFormSubmit={(e) => { this.props.editPost(e); this.setState({modalOpen: false}) }}
-            closeModal={() => { this.setState({modalOpen: false}) }}
-          />
-        </Modal>
-        <Modal
-          className='modal'
-          overlayClassName='overlay'
+          onFormSubmit={(e) => { this.props.editPost(e); this.setState({modalOpen: false}) }}
+          closeModal={() => { this.setState({modalOpen: false}) }}
+        />
+        <CreateCommentModal
+          parentId={this.props.post.id}
+          category={this.props.post.category}
           isOpen={this.state.CreateModalOpen}
-          onRequestClose={() => { this.setState({CreateModalOpen: false}) }}
-          contentLabel='Modal'
-        >
-          <CreateCommentModal
-            parentId={this.props.post.id}
-            category={this.props.post.category}
-            onFormSubmit={(e) => {
-              createComment(e)
-              this.setState({CreateModalOpen: false})
-            }}
-            closeModal={() => { this.setState({CreateModalOpen: false}) }}
-          />
-        </Modal>
+          closeModal={() => { this.setState({CreateModalOpen: false}) }}
+          onFormSubmit={(e) => {
+            createComment(e)
+            this.setState({CreateModalOpen: false})
+          }}
+        />
       </div>
     )
   }

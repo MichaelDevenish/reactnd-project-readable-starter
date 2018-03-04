@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import '../App.css'
 import PropTypes from 'prop-types'
+import Modal from 'react-modal'
 
 export default class EditModal extends Component {
   constructor (props) {
@@ -11,18 +11,31 @@ export default class EditModal extends Component {
         title,
         body,
         id
-      }
+      },
+      isOpen
     } = props
 
     this.state = {
       title: title,
       body: body,
-      id: id
+      id: id,
+      modalOpen: isOpen
     }
 
     this.handleTitleChange = this.handleTitleChange.bind(this)
     this.handleBodyChange = this.handleBodyChange.bind(this)
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
+  }
+
+  componentWillReceiveProps (newProps) {
+    if (newProps.currentEditedItem) {
+      this.setState({
+        title: newProps.currentEditedItem.title,
+        body: newProps.currentEditedItem.body,
+        id: newProps.currentEditedItem.id
+      })
+    }
+    this.setState({modalOpen: newProps.isOpen})
   }
 
   get submitDisabled () {
@@ -81,7 +94,13 @@ export default class EditModal extends Component {
 
   render () {
     return (
-      <div>
+      <Modal
+        className='modal'
+        overlayClassName='overlaoptionoptionoptiony'
+        isOpen={this.state.modalOpen}
+        onRequestClose={() => { this.setState({modalOpen: false}) }}
+        contentLabel='Modal'
+      >
         <button className='exit-modal' onClick={() => { this.setState({modalOpen: false}); this.props.closeModal() }} />
         <h1>Edit</h1>
         <form onSubmit={(event) => { this.handleFormSubmit(event) }}>
@@ -99,7 +118,7 @@ export default class EditModal extends Component {
           }
           <input type='submit' value='Submit' className='submit' disabled={this.submitDisabled} />
         </form>
-      </div>
+      </Modal>
     )
   }
 }
@@ -107,5 +126,6 @@ export default class EditModal extends Component {
 EditModal.propTypes = {
   currentEditedItem: PropTypes.object,
   onFormSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired
+  closeModal: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool
 }

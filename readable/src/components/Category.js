@@ -1,13 +1,19 @@
-import React, { Component } from 'react'
-import '../App.css'
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
 import axios from 'axios'
-import PropTypes from 'prop-types'
-import { addPost, deletePostAsync, upvotePostAsync, downvotePostAsync, createPostAsync, editPostAsync } from '../actions/post'
-import DetailList from './DetailList'
 import Modal from 'react-modal'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import React, { Component } from 'react'
+import { withRouter } from 'react-router-dom'
+import DetailList from './DetailList'
 import CreatePostModal from './CreatePostModal'
+import {
+  addPost,
+  deletePostAsync,
+  upvotePostAsync,
+  downvotePostAsync,
+  createPostAsync,
+  editPostAsync
+} from '../actions/post'
 
 class Category extends Component {
   constructor (props) {

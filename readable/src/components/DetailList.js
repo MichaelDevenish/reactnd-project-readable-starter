@@ -1,14 +1,12 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import _ from 'lodash'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import _ from 'lodash'
-import '../App.css'
+import { Link } from 'react-router-dom'
+import React, { Component } from 'react'
 import Voter from './Voter'
 import PostItem from './PostItem'
-import CommentItem from './CommentItem'
-import Modal from 'react-modal'
 import EditModal from './EditModal'
+import CommentItem from './CommentItem'
 
 export default class DetailList extends Component {
   constructor (props) {
@@ -32,7 +30,6 @@ export default class DetailList extends Component {
   }
 
   renderPosts (posts) {
-    console.log(posts)
     switch (this.state.sortType) {
       case 'score':
         posts = _.orderBy(posts, ['voteScore'], ['desc'])
@@ -46,7 +43,6 @@ export default class DetailList extends Component {
     const postIds = Object.keys(posts)
     if (postIds.length > 0) {
       return postIds.map((postId, index) => {
-        console.log(posts[postId])
         if (posts[postId] !== undefined && posts[postId] !== null) {
           const even = index % 2 === 0
           return (
@@ -131,19 +127,12 @@ export default class DetailList extends Component {
         <div className='list-of-posts'>
           {this.renderPosts(this.props.posts)}
         </div>
-        <Modal
-          className='modal'
-          overlayClassName='overlay'
+        <EditModal
+          currentEditedItem={this.state.currentEditedItem}
           isOpen={this.state.modalOpen}
-          onRequestClose={() => { this.setState({modalOpen: false}) }}
-          contentLabel='Modal'
-        >
-          <EditModal
-            currentEditedItem={this.state.currentEditedItem}
-            onFormSubmit={(e) => { this.props.editItem(e); this.setState({modalOpen: false}) }}
-            closeModal={() => { this.setState({modalOpen: false}) }}
-          />
-        </Modal>
+          onFormSubmit={(e) => { this.props.editItem(e); this.setState({modalOpen: false}) }}
+          closeModal={() => { this.setState({modalOpen: false}) }}
+        />
       </div>
     )
   }

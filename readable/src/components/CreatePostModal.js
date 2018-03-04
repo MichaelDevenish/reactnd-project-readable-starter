@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import '../App.css'
 import PropTypes from 'prop-types'
+import Modal from 'react-modal'
 
 export default class CreatePostModal extends Component {
   constructor (props) {
@@ -10,11 +11,13 @@ export default class CreatePostModal extends Component {
       ? this.props.staticCategory
       : 'none'
 
+
     this.state = {
       category: category,
       title: '',
       author: '',
-      body: ''
+      body: '',
+      modalOpen: this.props.isOpen
     }
 
     this.handleTitleChange = this.handleTitleChange.bind(this)
@@ -22,6 +25,10 @@ export default class CreatePostModal extends Component {
     this.handleBodyChange = this.handleBodyChange.bind(this)
     this.handleCategoryChange = this.handleCategoryChange.bind(this)
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
+  }
+
+  componentWillReceiveProps (newProps) {
+    this.setState({modalOpen: newProps.isOpen})
   }
 
   get submitDisabled () {
@@ -92,7 +99,13 @@ export default class CreatePostModal extends Component {
 
   render () {
     return (
-      <div>
+      <Modal
+        className='modal'
+        overlayClassName='overlay'
+        isOpen={this.state.modalOpen}
+        onRequestClose={() => { this.setState({modalOpen: false}) }}
+        contentLabel='Modal'
+      >
         <button className='exit-modal' onClick={() => { this.setState({modalOpen: false}); this.props.closeModal() }} />
         <h1>Create New Post</h1>
         <form onSubmit={(event) => { this.handleFormSubmit(event) }}>
@@ -114,7 +127,7 @@ export default class CreatePostModal extends Component {
 
           <input type='submit' value='Submit' className='submit' disabled={this.submitDisabled} />
         </form>
-      </div>
+      </Modal>
     )
   }
 }
@@ -123,5 +136,5 @@ CreatePostModal.propTypes = {
   categories: PropTypes.array,
   onFormSubmit: PropTypes.func.isRequired,
   staticCategory: PropTypes.string,
-  closeModal: PropTypes.func.isRequired
+  isOpen: PropTypes.bool.isRequired
 }
