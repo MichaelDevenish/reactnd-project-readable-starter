@@ -52,39 +52,40 @@ body {
   color: lightblue;
 }
 /* #endregion */
-/* #region mainPage*/
-.Main > .categories {
+/* #region general page style*/
+.categories {
   margin: 0px;
   background-color: lightgray;
 }
 
-.Main > .categories a {
+.categories a {
   word-wrap: break-word;
   text-decoration: inherit;
   color: rgb(82, 82, 82);
 }
 
-.Main > .categories a:hover {
-  color: darkcyan;
+.categories a:hover h2,
+.categories a:hover h3 {
+  color: darkcyan !important;
 }
 
-.Main > .categories h2 {
+.categories h2 {
   color: rgb(82, 82, 82);
 }
 
 @media (max-width: 768px) {
-  .Main > .categories {
+  .categories {
     padding:16px;
     padding-bottom: 1px;
 
   }
 
-  .Main > .categories .category {
+  .categories .category {
     padding-left:16px;
 
   }
 
-  .Main > .detail-list h2 {
+  .detail-list h2 {
     margin-top:0px;
     color: rgb(82, 82, 82);
 
@@ -96,7 +97,7 @@ body {
   }}
 
 @media (min-width: 768px) {
-  .Main > .categories {
+  .categories {
     width: 200px;
     padding-left:2em;
     padding-right:2em;
@@ -107,7 +108,12 @@ body {
 
   }
 
-  .Main > .detail-list {
+  .post-details {
+    width: -webkit-calc(100% - 450px);
+    width:    -moz-calc(100% - 450px);
+    width:         calc(100% - 450px);
+  }
+  .detail-list {
     float:left;
     width: -webkit-calc(100% - 16em);
     width:    -moz-calc(100% - 16em);

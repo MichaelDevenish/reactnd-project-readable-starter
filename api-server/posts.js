@@ -9,7 +9,7 @@ const defaultData = {
     title: 'Udacity is the best place to learn React',
     body: 'Everyone says so after all.',
     author: 'thingtwo',
-    category: 'react',
+    category: 'redux',
     voteScore: 6,
     deleted: false,
     commentCount: 2

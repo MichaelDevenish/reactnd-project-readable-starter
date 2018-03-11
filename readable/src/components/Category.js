@@ -41,6 +41,7 @@ class Category extends Component {
         categories={categories}
         staticCategory={name}
         titleBack="/"
+        showReturnHome
       />
     );
   }

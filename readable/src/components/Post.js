@@ -8,6 +8,7 @@ import DetailList from './DetailList';
 import EditModal from './modals/EditModal';
 import CreateCommentModal from './modals/CreateCommentModal';
 import PostDetails from './smalls/PostDetails';
+import CategoryIndex from './smalls/CategoryIndex';
 import {
   addComment,
   upvoteCommentAsync,
@@ -87,12 +88,17 @@ class Post extends Component {
       downvotePost,
       upvoteComment,
       downvoteComment,
-      createComment
+      createComment,
+      categories
     } = this.props
 
     if (post.id) {
       return (
         <div className="post-page">
+          <CategoryIndex
+            categories={categories}
+            showReturnHome
+          />
           <div className="post-header">
             <Link to={this.backNavigate} className="back-link"><p /></Link>
             <Voter
@@ -116,7 +122,10 @@ class Post extends Component {
               editItem={(id) => { this.props.editComment(id) }}
             />
           </div>
-          <button className="action-button category-post-create" onClick={() => { this.setState({CreateModalOpen: true}) }} >
+          <button
+            className="action-button main-post-create"
+            onClick={() => { this.setState({CreateModalOpen: true}) }}
+          >
             <span className="create-action" />
           </button>
           <EditModal
@@ -163,7 +172,8 @@ function mapStateToProps ({comments, posts, categories}, ownProps) {
         delete relatedcomments[comment]
       }
       return relatedcomments
-    }, {})
+    }, {}),
+    categories
   }
 }
 

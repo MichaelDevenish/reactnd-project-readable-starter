@@ -3,6 +3,7 @@ import { Link, withRouter } from 'react-router-dom';
 import DetailList from './DetailList';
 import CreatePostModal from './modals/CreatePostModal';
 import { connect } from 'react-redux';
+import CategoryIndex from './smalls/CategoryIndex';
 import {
   deletePostAsync,
   upvotePostAsync,
@@ -47,20 +48,20 @@ class PostListPage extends Component {
       categories,
       upvotePost,
       downvotePost,
-      createPost,
       deletePost,
       editPost,
       titleBack,
       staticCategory,
-      fromDashboard
+      fromDashboard,
+      showReturnHome
     } = this.props;
 
     return (
       <div className="Main">
-        <div className="categories">
-          <h2>Categories</h2>
-          {this.renderCategories(categories)}
-        </div>
+        <CategoryIndex
+          categories={categories}
+          showReturnHome={showReturnHome}
+        />
         <DetailList
           posts={posts}
           upvotePost={upvotePost}
