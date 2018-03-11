@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import Modal from 'react-modal'
+import React, { Component } from 'react';
+import Modal from 'react-modal';
 
 export default class EditModal extends Component {
   constructor (props) {
-    super(props)
+    super(props);
 
     const {
       currentEditedItem: {
@@ -12,7 +12,7 @@ export default class EditModal extends Component {
         id
       },
       isOpen
-    } = props
+    } = props;
 
     this.state = {
       title: title,
@@ -21,9 +21,10 @@ export default class EditModal extends Component {
       modalOpen: isOpen
     }
 
-    this.handleTitleChange = this.handleTitleChange.bind(this)
-    this.handleBodyChange = this.handleBodyChange.bind(this)
-    this.handleFormSubmit = this.handleFormSubmit.bind(this)
+    this.handleTitleChange = this.handleTitleChange.bind(this);
+    this.handleBodyChange = this.handleBodyChange.bind(this);
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   componentWillReceiveProps (newProps) {
@@ -32,26 +33,26 @@ export default class EditModal extends Component {
         title: newProps.currentEditedItem.title,
         body: newProps.currentEditedItem.body,
         id: newProps.currentEditedItem.id
-      })
+      });
     }
-    this.setState({modalOpen: newProps.isOpen})
+    this.setState({modalOpen: newProps.isOpen});
   }
 
   get submitDisabled () {
     const {
       title,
       body
-    } = this.state
+    } = this.state;
 
-    return title === '' || body === ''
+    return title === '' || body === '';
   }
 
   generateSelect () {
     const {
       categories
-    } = this.props
+    } = this.props;
 
-    let options = [<option value='none' key='Please Select a Category' disabled>Please Select a Category</option>];
+    let options = [<option value="none" key="Please Select a Category" disabled>Please Select a Category</option>];
 
     options = options.concat(Object.keys(categories).map((category) => {
       return (
@@ -60,17 +61,17 @@ export default class EditModal extends Component {
           key={categories[category].path}
         >
           {categories[category].name}
-        </option>)
-    }))
-    return options
+        </option>);
+    }));
+    return options;
   }
 
   handleTitleChange (event) {
-    this.setState({title: event.target.value})
+    this.setState({title: event.target.value});
   }
 
   handleBodyChange (event) {
-    this.setState({body: event.target.value})
+    this.setState({body: event.target.value});
   }
 
   handleFormSubmit (event) {
@@ -78,48 +79,61 @@ export default class EditModal extends Component {
       title,
       body,
       id
-    } = this.state
+    } = this.state;
 
-    event.preventDefault()
+    event.preventDefault();
     if (!this.submitDisabled) {
-      this.setState({modalOpen: false})
+      this.setState({modalOpen: false});
       this.props.onFormSubmit({
         title,
         body,
         id
-      })
+      });
+    }
+  }
+
+  closeModal () {
+    this.setState({modalOpen: false});
+    this.props.closeModal();
+  }
+
+  get title () {
+    if (this.props.currentEditedItem.title) {
+      return <div>
+        <h3>Title</h3>
+        <input type="text" value={this.state.title} onChange={this.handleTitleChange} />
+      </div>
+    }
+  }
+
+  get body () {
+    if (this.props.currentEditedItem.body) {
+      return <div>
+        <h3>Body</h3>
+        <textarea value={this.state.body} onChange={this.handleBodyChange} />
+      </div>
     }
   }
 
   render () {
     return (
       <Modal
-        className='modal'
-        overlayClassName='overlay'
+        className="modal"
+        overlayClassName="overlay"
         isOpen={this.state.modalOpen}
         onRequestClose={() => { this.setState({modalOpen: false}) }}
-        contentLabel='Modal'
+        contentLabel="Modal"
       >
-        <button className='exit-modal' onClick={() => { this.setState({modalOpen: false}); this.props.closeModal() }} />
+        <button className="exit-modal" onClick={this.closeModal} />
         <h1>Edit</h1>
         <form onSubmit={(event) => { this.handleFormSubmit(event) }}>
-          { this.props.currentEditedItem.title &&
-          <div>
-            <h3>Title</h3>
-            <input type='text' value={this.state.title} onChange={this.handleTitleChange} />
-          </div>
-          }
-          { this.props.currentEditedItem.body &&
-            <div>
-              <h3>Body</h3>
-              <textarea value={this.state.body} onChange={this.handleBodyChange} />
-            </div>
-          }
-          <input type='submit' value='Submit' className='submit' disabled={this.submitDisabled} />
+          {this.title}
+          {this.body}
+          <input type="submit" value="Submit" className="submit" disabled={this.submitDisabled} />
         </form>
       </Modal>
-    )
+    );
   }
 }
 
-Modal.setAppElement('#root')
+Modal.setAppElement('#root');

@@ -1,32 +1,35 @@
-import _ from 'lodash'
-import classNames from 'classnames'
-import { Link } from 'react-router-dom'
-import React, { Component } from 'react'
-import EditModal from './modals/EditModal'
-import DetailItem from './DetailItem'
+import _ from 'lodash';
+import classNames from 'classnames';
+import { Link } from 'react-router-dom';
+import React, { Component } from 'react';
+import EditModal from './modals/EditModal';
+import DetailItem from './DetailItem';
 
 export default class DetailList extends Component {
   constructor (props) {
-    super(props)
+    super(props);
     this.state = {
       sortType: 'index',
       currentEditedItem: {},
       modalOpen: false
     }
+
+    this.submitForm = this.submitForm.bind(this)
   }
 
   renderPosts (posts) {
     switch (this.state.sortType) {
       case 'score':
-        posts = _.orderBy(posts, ['voteScore'], ['desc'])
-        break
+        posts = _.orderBy(posts, ['voteScore'], ['desc']);
+        break;
       case 'date':
-        posts = _.orderBy(posts, ['timestamp'], ['desc'])
-        break
+        posts = _.orderBy(posts, ['timestamp'], ['desc']);
+        break;
       default:
-        break
+        break;
     }
-    const postIds = Object.keys(posts)
+
+    const postIds = Object.keys(posts);
     if (postIds.length > 0) {
       return postIds.map((postId, index) => {
         if (posts[postId] !== undefined && posts[postId] !== null) {
@@ -43,9 +46,9 @@ export default class DetailList extends Component {
               fromDashboard={this.props.fromDashboard}
             />
           )
-        }
-        return null
-      })
+        };
+        return null;
+      });
     }
   }
 
@@ -53,15 +56,16 @@ export default class DetailList extends Component {
     const {
       title,
       titleBack
-    } = this.props
-    var back = null
+    } = this.props;
+
+    let back = null;
     if (titleBack) {
-      back = <Link to={titleBack} className='back-link'><p /></Link>
-    }
+      back = <Link to={titleBack} className="back-link"><p /></Link>
+    };
     if (title) {
-      return <div>{back}<h2>{title}</h2></div>
+      return <div>{back}<h2>{title}</h2></div>;
     } else {
-      return null
+      return null;
     }
   }
 
@@ -79,7 +83,7 @@ export default class DetailList extends Component {
 
   get sortText () {
     return (
-      <div className='sort-text' >
+      <div className="sort-text" >
         <p>Sort By: </p>
         {this.generateSortItem('index')}
         <p>|</p>
@@ -87,26 +91,31 @@ export default class DetailList extends Component {
         <p>|</p>
         {this.generateSortItem('date')}
       </div>
-    )
+    );
+  }
+
+  submitForm (event) {
+    this.props.editItem(event);
+     this.setState({modalOpen: false})
   }
 
   render () {
     return (
-      <div className='detail-list'>
-        <div className='detail-list-header'>
+      <div className="detail-list">
+        <div className="detail-list-header">
           {this.title}
           {this.sortText}
         </div>
-        <div className='detail-items'>
+        <div className="detail-items">
           {this.renderPosts(this.props.posts)}
         </div>
         <EditModal
           currentEditedItem={this.state.currentEditedItem}
           isOpen={this.state.modalOpen}
-          onFormSubmit={(e) => { this.props.editItem(e); this.setState({modalOpen: false}) }}
+          onFormSubmit={this.submitForm}
           closeModal={() => { this.setState({modalOpen: false}) }}
         />
       </div>
-    )
+    );
   }
 }

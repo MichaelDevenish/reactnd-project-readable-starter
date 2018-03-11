@@ -5,6 +5,18 @@ body {
   word-wrap: break-word;
 }
 
+.not-found {
+  color: whitesmoke;
+  text-align: center;
+  position: absolute;
+  vertical-align: middle;
+  left: 0;
+  right: 0;
+  top: 50%;
+  bottom: 0;
+  margin: 0;
+}
+
 .back-link p {
   float: left;
   margin: 10px;
@@ -13,14 +25,15 @@ body {
   height: 3em;
   background-color: rgb(82, 82, 82);
   -webkit-mask-repeat: no-repeat;
-  -webkit-mask-image: url('./images/arrow-left.svg');
-  mask-image: url('./images/arrow-left.svg');
+  -webkit-mask-image: url(./images/arrow-left.svg);
+  mask-image: url(./images/arrow-left.svg);
   mask-repeat: no-repeat;
 }
 
 .back-link:hover p {
  background-color: darkcyan;
-}
+
+ }
 
 .icon-button {
   width: 2em;
@@ -63,18 +76,24 @@ body {
   .Main > .categories {
     padding:16px;
     padding-bottom: 1px;
+
   }
+
   .Main > .categories .category {
     padding-left:16px;
+
   }
+
   .Main > .detail-list h2 {
     margin-top:0px;
     color: rgb(82, 82, 82);
+
   }
+
   .action-button.main-post-create {
     right: 20px;
-  }
-}
+
+  }}
 
 @media (min-width: 768px) {
   .Main > .categories {
@@ -85,16 +104,20 @@ body {
     height: 100vh;
     position: fixed;
     right: 0;
+
   }
+
   .Main > .detail-list {
     float:left;
     width: -webkit-calc(100% - 16em);
     width:    -moz-calc(100% - 16em);
     width:         calc(100% - 16em);
+
   }
 
   .action-button.main-post-create {
     right: 280px;
+
   }
 }
 /* #endregion */
@@ -122,12 +145,12 @@ body {
 
 .action-button .create-action{
   padding-left: 36px;
-  background: url('./images/plus.svg') no-repeat 0;
+  background: url(./images/plus.svg) no-repeat 0;
 }
 
 .action-button .edit-action{
   padding-left: 24px;
-  background: url('./images/edit.svg') no-repeat 0;
+  background: url(./images/edit.svg) no-repeat 0;
 }
 
 .action-button.category-post-create {
@@ -156,7 +179,8 @@ body {
   cursor: pointer;
 }
 
-.detail-list .sort-text .clicked:hover, .detail-list .sort-text .clicked {
+.detail-list .sort-text .clicked:hover,
+.detail-list .sort-text .clicked {
   color: darkcyan;
   cursor: default;
 }
@@ -194,14 +218,14 @@ body {
 }
 
 .detail-item .delete {
-  -webkit-mask-image: url('./images/delete.svg');
-  mask-image: url('./images/delete.svg');
+  -webkit-mask-image: url(./images/delete.svg);
+  mask-image: url(./images/delete.svg);
   margin-right: 20px;
 }
 
 .detail-item .edit {
-  -webkit-mask-image: url('./images/edit.svg');
-  mask-image: url('./images/edit.svg');
+  -webkit-mask-image: url(./images/edit.svg);
+  mask-image: url(./images/edit.svg);
   margin-right: 20px;
 }
 
@@ -237,37 +261,43 @@ body {
   margin-bottom: .3em;
 }
 
- .Voter > .upvote.votedUp:hover, .Voter > .upvote.votedUp {
+ .Voter > .upvote.votedUp:hover,
+ .Voter > .upvote.votedUp {
   background-color: greenyellow;
   cursor: default;
+
  }
 
-.Voter > .upvote:hover, .Voter > .upvote:focus {
+.Voter > .upvote:hover,
+.Voter > .upvote:focus {
   background-color: greenyellow;
   cursor: pointer;
 }
 
-.Voter > .downvote.votedDown:hover, .Voter > .downvote.votedDown {
+.Voter > .downvote.votedDown:hover,
+.Voter > .downvote.votedDown {
   background-color: red;
   cursor: default;
 }
 
-.Voter > .downvote:hover, .Voter > .downvote:focus {
+.Voter > .downvote:hover,
+.Voter > .downvote:focus {
   background-color: red;
   cursor: pointer;
 }
 
 .Voter > .upvote {
-  -webkit-mask-image: url('./images/chevron-up.svg');
-  mask-image: url('./images/chevron-up.svg');
+  -webkit-mask-image: url(./images/chevron-up.svg);
+  mask-image: url(./images/chevron-up.svg);
 }
 
 .Voter > .downvote {
-  -webkit-mask-image: url('./images/chevron-down.svg');
-  mask-image: url('./images/chevron-down.svg');
+  -webkit-mask-image: url(./images/chevron-down.svg);
+  mask-image: url(./images/chevron-down.svg);
 }
 
-.Voter > .upvote, .Voter > .downvote {
+.Voter > .upvote,
+.Voter > .downvote {
   width: 2em;
   height: 2em;
   border: none;
@@ -305,8 +335,15 @@ body {
 }
 
 .post-details .edit-button {
-  -webkit-mask-image: url('./images/edit.svg');
-  mask-image: url('./images/edit.svg');
+  -webkit-mask-image: url(./images/edit.svg);
+  mask-image: url(./images/edit.svg);
+  background-color: rgb(51, 51, 51);
+  margin-left: 10px;
+}
+
+.post-details .delete-button {
+  -webkit-mask-image: url(./images/delete.svg);
+  mask-image: url(./images/delete.svg);
   background-color: rgb(51, 51, 51);
   margin-left: 10px;
 }
@@ -336,10 +373,12 @@ body {
     padding: 20px;
     width: 100%;
     height: 100%;
+
   }
 
   .modal input.submit {
     margin-right: 50px !important;
+
   }
 }
 
@@ -357,6 +396,7 @@ body {
     min-width: 700px;
     max-height: 600px;
     height: auto;
+
   }
 }
 
@@ -385,8 +425,8 @@ body {
   background-color: rgb(82, 82, 82);
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
-  -webkit-mask-image: url('./images/close.svg');
-  mask-image: url('./images/close.svg');
+  -webkit-mask-image: url(./images/close.svg);
+  mask-image: url(./images/close.svg);
 }
 
 .modal .exit-modal:hover {

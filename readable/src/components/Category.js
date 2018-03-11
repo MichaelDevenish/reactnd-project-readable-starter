@@ -1,21 +1,14 @@
-import axios from 'axios'
-import { connect } from 'react-redux'
-import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
-import DetailList from './DetailList'
-import CreatePostModal from './modals/CreatePostModal'
+import axios from 'axios';
+import { connect } from 'react-redux';
+import React, { Component } from 'react';
+import PostListPage from './PostListPage';
 import {
-  addPost,
-  deletePostAsync,
-  upvotePostAsync,
-  downvotePostAsync,
-  createPostAsync,
-  editPostAsync
-} from '../actions/post'
+  addPost
+} from '../actions/post';
 
 class Category extends Component {
   constructor (props) {
-    super(props)
+    super(props);
     this.state = {
       modalOpen: false
     }
@@ -26,9 +19,9 @@ class Category extends Component {
     {headers: {Authorization: 'Bearer potato'}})
     .then((resp) => {
       resp.data.forEach(element => {
-        this.props.addPost(element)
-      })
-    })
+        this.props.addPost(element);
+      });
+    });
   }
 
   render () {
@@ -39,37 +32,17 @@ class Category extends Component {
           }
         },
         posts,
-        upvotePost,
-        downvotePost,
-        createPost
-    } = this.props
+        categories
+    } = this.props;
 
     return (
-      <div className='Category'>
-        <DetailList
-          posts={posts}
-          upvotePost={upvotePost}
-          downvotePost={downvotePost}
-          title={name}
-          titleBack={'/'}
-          listType='post'
-          deleteItem={(id) => { this.props.deletePost(id) }}
-          editItem={(data) => { this.props.editPost(data) }}
-        />
-        <button
-          className='action-button category-post-create'
-          onClick={() => { this.setState({modalOpen: true}) }}
-        >
-          <span className='create-action' />
-        </button>
-        <CreatePostModal
-          staticCategory={name}
-          isOpen={this.state.modalOpen}
-          onFormSubmit={(e) => { createPost(e); this.setState({modalOpen: false}) }}
-          closeModal={() => { this.setState({modalOpen: false}) }}
-        />
-      </div>
-    )
+      <PostListPage
+        posts={posts}
+        categories={categories}
+        staticCategory={name}
+        titleBack="/"
+      />
+    );
   }
 }
 
@@ -81,25 +54,21 @@ function mapStateToProps ({comments, posts, categories}, ownProps) {
       if (posts[post] !== null) {
         relatedPosts[post] = posts[post].category === ownProps.match.params.name
           ? posts[post]
-          : null
-      }
+          : null;
+      };
       if (relatedPosts[post] === null) {
-        delete relatedPosts[post]
-      }
-      return relatedPosts
-    }, {})
+        delete relatedPosts[post];
+      };
+      return relatedPosts;
+    }, {}),
+    categories: categories
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
-    addPost: (data) => dispatch(addPost(data)),
-    upvotePost: (data) => dispatch(upvotePostAsync(data)),
-    downvotePost: (data) => dispatch(downvotePostAsync(data)),
-    createPost: (data) => dispatch(createPostAsync(data)),
-    deletePost: (data) => dispatch(deletePostAsync(data)),
-    editPost: (data) => dispatch(editPostAsync(data))
+    addPost: (data) => dispatch(addPost(data))
   }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Category))
+export default connect(mapStateToProps, mapDispatchToProps)(Category);

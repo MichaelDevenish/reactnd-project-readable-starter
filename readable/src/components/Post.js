@@ -1,13 +1,13 @@
-import axios from 'axios'
-import moment from 'moment'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import React, { Component } from 'react'
-import { Link, withRouter } from 'react-router-dom'
-import Voter from './smalls/Voter'
-import DetailList from './DetailList'
-import EditModal from './modals/EditModal'
-import CreateCommentModal from './modals/CreateCommentModal'
+import axios from 'axios';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import React, { Component } from 'react';
+import { Link, withRouter } from 'react-router-dom';
+import Voter from './smalls/Voter';
+import DetailList from './DetailList';
+import EditModal from './modals/EditModal';
+import CreateCommentModal from './modals/CreateCommentModal';
+import PostDetails from './smalls/PostDetails';
 import {
   addComment,
   upvoteCommentAsync,
@@ -15,21 +15,25 @@ import {
   deleteCommentAsync,
   editCommentAsync,
   createCommentAsync
-} from '../actions/comment'
+} from '../actions/comment';
 import {
   addPost,
   upvotePostAsync,
   downvotePostAsync,
-  editPostAsync
-} from '../actions/post'
+  editPostAsync,
+  deletePostAsync
+} from '../actions/post';
 
-class Category extends Component {
+class Post extends Component {
   constructor (props) {
-    super(props)
+    super(props);
     this.state = {
       modalOpen: false,
       CreateModalOpen: false
     }
+
+    this.removePost = this.removePost.bind(this);
+    this.submitForm = this.submitForm.bind(this);
   }
 
   componentDidMount () {
@@ -37,24 +41,48 @@ class Category extends Component {
     {headers: {Authorization: 'Bearer potato'}})
     .then((resp) => {
       resp.data.forEach(element => {
-        this.props.addComment(element)
-      })
-    })
+        this.props.addComment(element);
+      });
+    });
 
     axios.get(`http://127.0.0.1:3001/posts/${this.props.match.params.name}`,
     {headers: {Authorization: 'Bearer potato'}})
     .then((resp) => {
-      this.props.addPost(resp.data)
-    })
+      this.props.addPost(resp.data);
+    });
+  }
+
+  get backNavigate () {
+    const {
+      post,
+      location: {
+        state
+      }
+    } = this.props;
+
+    return state ? state.fromDashboard ? `/` : `/${post.category}` : '/';
+  }
+
+  removePost () {
+    const {
+      post,
+      deletePost,
+      history
+    } = this.props;
+
+    history.push(this.backNavigate);
+    deletePost({id: post.id});
+  }
+
+  submitForm (event) {
+    this.props.editPost(event);
+    this.setState({modalOpen: false});
   }
 
   render () {
     const {
       comments,
       post,
-      location: {
-        state
-      },
       upvotePost,
       downvotePost,
       upvoteComment,
@@ -62,55 +90,58 @@ class Category extends Component {
       createComment
     } = this.props
 
-    return (
-      <div className='post-page'>
-        <div className='post-header'>
-          <Link to={state ? state.fromDashboard ? `/` : `/${post.category}` : '/'} className='back-link'><p /></Link>
-          <Voter
-            onVoteUp={() => { upvotePost({id: post.id}) }}
-            onVoteDown={() => { downvotePost({id: post.id}) }}
-            voteScore={post.voteScore}
-          />
-          <div className='post-details'>
-            <h1>{post.title}</h1>
-            <button className='icon-button edit-button' onClick={() => { this.setState({modalOpen: true}) }} />
-            <p>By {post.author} on {moment(post.timestamp).format('MMMM Do YYYY, h:mm:ss a')}</p>
-            <p className='body'>{post.body}</p>
+    if (post.id) {
+      return (
+        <div className="post-page">
+          <div className="post-header">
+            <Link to={this.backNavigate} className="back-link"><p /></Link>
+            <Voter
+              onVoteUp={() => { upvotePost({id: post.id}) }}
+              onVoteDown={() => { downvotePost({id: post.id}) }}
+              voteScore={post.voteScore}
+            />
+            <PostDetails
+              editPost={() => this.setState({modalOpen: true})}
+              deletePost={this.removePost}
+              post={post}
+            />
           </div>
-        </div>
-        <div className='posts'>
-          <DetailList
-            posts={comments}
-            upvotePost={upvoteComment}
-            downvotePost={downvoteComment}
-            listType='comment'
-            deleteItem={(id) => { this.props.deleteComment(id) }}
-            editItem={(id) => { this.props.editComment(id) }}
+          <div className="posts">
+            <DetailList
+              posts={comments}
+              upvotePost={upvoteComment}
+              downvotePost={downvoteComment}
+              listType="comment"
+              deleteItem={(id) => { this.props.deleteComment(id) }}
+              editItem={(id) => { this.props.editComment(id) }}
+            />
+          </div>
+          <button className="action-button category-post-create" onClick={() => { this.setState({CreateModalOpen: true}) }} >
+            <span className="create-action" />
+          </button>
+          <EditModal
+            currentEditedItem={this.props.post}
+            isOpen={this.state.modalOpen}
+            onFormSubmit={this.submitForm}
+            closeModal={() => { this.setState({modalOpen: false}) }}
+          />
+          <CreateCommentModal
+            parentId={this.props.post.id}
+            category={this.props.post.category}
+            isOpen={this.state.CreateModalOpen}
+            closeModal={() => { this.setState({CreateModalOpen: false}) }}
+            onFormSubmit={(e) => {
+              createComment(e)
+              this.setState({CreateModalOpen: false})
+            }}
           />
         </div>
-        <button className='action-button category-post-create' onClick={() => { this.setState({CreateModalOpen: true}) }} ><span className='create-action' /></button>
-        <EditModal
-          currentEditedItem={this.props.post}
-          isOpen={this.state.modalOpen}
-          onFormSubmit={(e) => { this.props.editPost(e); this.setState({modalOpen: false}) }}
-          closeModal={() => { this.setState({modalOpen: false}) }}
-        />
-        <CreateCommentModal
-          parentId={this.props.post.id}
-          category={this.props.post.category}
-          isOpen={this.state.CreateModalOpen}
-          closeModal={() => { this.setState({CreateModalOpen: false}) }}
-          onFormSubmit={(e) => {
-            createComment(e)
-            this.setState({CreateModalOpen: false})
-          }}
-        />
-      </div>
-    )
+      );
+    } else return <h1 className="not-found"> Sorry the following post could not be found </h1>;
   }
 }
 
-Category.defaultProps = {
+Post.defaultProps = {
   post: PropTypes.shape({
     title: '',
     voteScore: 0
@@ -147,8 +178,9 @@ function mapDispatchToProps (dispatch) {
     deleteComment: (data) => dispatch(deleteCommentAsync(data)),
     editComment: (data) => dispatch(editCommentAsync(data)),
     editPost: (data) => dispatch(editPostAsync(data)),
+    deletePost: (data) => dispatch(deletePostAsync(data)),
     createComment: (data) => dispatch(createCommentAsync(data))
   }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Category))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Post));

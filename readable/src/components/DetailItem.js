@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
-import classNames from 'classnames'
-import Voter from './smalls/Voter'
-import PostItem from './listItems/PostItem'
-import CommentItem from './listItems/CommentItem'
+import React, { Component } from 'react';
+import classNames from 'classnames';
+import Voter from './smalls/Voter';
+import PostItem from './listItems/PostItem';
+import CommentItem from './listItems/CommentItem';
 
 export default class DetailItem extends Component {
   itemDetails (details) {
@@ -20,11 +20,11 @@ export default class DetailItem extends Component {
     const {
       editAction,
       item
-    } = this.props
+    } = this.props;
 
     if (editAction) {
       return <button
-        className='edit icon-button'
+        className="edit icon-button"
         onClick={() => {
           editAction(item)
         }}
@@ -36,11 +36,11 @@ export default class DetailItem extends Component {
     const {
       deleteAction,
       item
-    } = this.props
+    } = this.props;
 
     if (deleteAction) {
       return <button
-        className='delete icon-button'
+        className="delete icon-button"
         onClick={() => {
           deleteAction({
             id: item.id
@@ -56,7 +56,7 @@ export default class DetailItem extends Component {
       downvoteItem,
       even,
       item
-    } = this.props
+    } = this.props;
 
     return (
       <div className={classNames('detail-item', {evenPost: even, oddPost: !even})} >
@@ -65,12 +65,12 @@ export default class DetailItem extends Component {
           onVoteDown={() => { downvoteItem({ id: item.id }) }}
           voteScore={item.voteScore}
         />
-        <div className='detail-item-custom-section'>
+        <div className="detail-item-custom-section">
           {this.itemDetails(item)}
         </div>
         {this.editItem}
         {this.deleteItem}
       </div>
-    )
+    );
   }
 }

@@ -3,7 +3,7 @@ import classNames from 'classnames'
 
 export default class Voter extends Component {
   constructor (props) {
-    super(props)
+    super(props);
     this.state = {
       votedUp: false,
       votedDown: false
@@ -11,22 +11,22 @@ export default class Voter extends Component {
   }
 
   voteDown () {
-    this.setState({ votedUp: false, votedDown: true })
-    this.props.onVoteDown()
+    this.setState({ votedUp: false, votedDown: true });
+    this.props.onVoteDown();
   }
 
   voteUp () {
-    this.setState({ votedUp: true, votedDown: false })
-    this.props.onVoteUp()
+    this.setState({ votedUp: true, votedDown: false });
+    this.props.onVoteUp();
   }
 
   render () {
     const {
       voteScore
-    } = this.props
+    } = this.props;
 
     return (
-      <div className='Voter'>
+      <div className="Voter">
         <button
           className={classNames('upvote', {votedUp: this.state.votedUp})}
           onClick={() => { this.voteUp() }}
@@ -37,6 +37,6 @@ export default class Voter extends Component {
           onClick={() => { this.voteDown() }}
         />
       </div>
-    )
+    );
   }
 }

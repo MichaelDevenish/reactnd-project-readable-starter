@@ -1,4 +1,4 @@
-export const CREATE_CATEGORY = 'CREATE_CATEGORY'
+export const CREATE_CATEGORY = 'CREATE_CATEGORY';
 
 export function createCategory ({
     name,
