@@ -6,11 +6,11 @@ This project is made for the second assessment on the react nanodegree run by Ud
 
 ## Run the application
 Setting up the server:
-* Run `npm install` in the following directories to install dependencies for the backend and frontend servers respectively.
+* Run `npm install` or `yarn` in the following directories to install dependencies for the backend and frontend servers respectively.
     - `api-server`
     - `readable`
 
 Running the server:
-* run `node server` in the following directories to start up the backend and frontend servers respectively.
-    - `api-server`
-    - `readable`
+* To start the servers do the following
+    - run `node server` in the following `api-server` directory to start the backend
+    - run `yarn start` in the `readable` directory to start the frontend
