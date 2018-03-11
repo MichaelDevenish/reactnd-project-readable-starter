@@ -1,19 +1,16 @@
-# Readable
+## Readable
+This is a simple application that lets users create posts arround specific topics and leave comments on those posts. they can then either upvote or downvote the posts and comments to rank them.
 
-This is a fork of the backend api server found at https://github.com/udacity/reactnd-project-readable-starter
+## Udacity
+This project is made for the second assessment on the react nanodegree run by Udacity.
 
 ## Run the application
+Setting up the server:
+* Run `npm install` in the following directories to install dependencies for the backend and frontend servers respectively.
+    - `api-server`
+    - `readable`
 
-To run the server:
-* Install and start the API server
-    - `cd api-server`
-    - `npm install`
-    - `node server`
-* In another terminal window, install and start the frontend server
-    - `cd readable`
-    - `npm install`
-    - `npm start`
-
-## API Server
-
-Information about the API server and how to use it can be found in its [README file](api-server/README.md).
+Running the server:
+* run `node server` in the following directories to start up the backend and frontend servers respectively.
+    - `api-server`
+    - `readable`
